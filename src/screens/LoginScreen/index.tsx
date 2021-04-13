@@ -21,7 +21,9 @@ import {
   Item,
   Input,
   Label,
+  Button,
 } from 'native-base';
+import axios from 'axios';
 
 // LoginScreen 에 필요한 파라미터들을 StackNavigationProp 으로 타입 명시해준다.
 type LoginScreenNavigationProps = StackNavigationProp<
@@ -40,6 +42,33 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
   const initialSymbol: string = '';
   const [symbol, setSymbol] = useState<string>(initialSymbol);
   // LoginScreenProps 에 navigation 이 있으니까 비구조화 할당으로 꺼내쓸 수 있음
+
+  const login = async () => {
+    console.log('로그인 클릭');
+
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    const result = await axios.post(
+      'http://localhost:4000/api/user',
+      { headers },
+      {
+        params: {
+          email: 'email',
+          nickName: '얏얏',
+          password: '1234',
+          name: '윤태진',
+          schoolID: '151515',
+          grade: 4,
+          class: 3,
+        },
+      },
+    );
+
+    console.log(result);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logo}>
@@ -68,7 +97,9 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
         <TouchableOpacity
           style={styles.buttonContainer}
           onPress={() => navigation.navigate(HomeScreens.Details, { symbol })}>
-          <Text style={styles.buttonText}>로그인</Text>
+          <Text style={styles.buttonText} onPress={login}>
+            로그인
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonContainer}

@@ -1,5 +1,12 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {
   HomeScreens,
   HomeStackParamList,
@@ -37,7 +44,7 @@ const styles = StyleSheet.create({
   btnLoginContainer: {
     alignSelf: 'center',
   },
-  buttonContainer: {
+  signupButton: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height * 0.09,
     alignItems: 'center',
@@ -45,11 +52,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    color: 'white',
+    color: 'black',
   },
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'space-between',
     margin: 10,
   },
@@ -58,7 +64,6 @@ const styles = StyleSheet.create({
   },
   txtSignupScreenContainer: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   footer: {
@@ -72,51 +77,114 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: 'grey',
   },
+  nickNameDuplicate: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 5,
+  },
 });
 
 const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordCheck, setPasswordCheck] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [birth, setBirth] = useState('');
+  const [nickname, setNickname] = useState<string>('');
+  const [school, setSchool] = useState('');
+
   const { navigation, route } = props;
   const { params } = route;
   const { symbol } = params;
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.txtSignupScreenContainer}>
-      <Container>
+        <Container>
           <Content>
             <Form>
               <Item stackedLabel>
-                <Label>username</Label>
-                <Input />
+                <Label>이메일</Label>
+                <Input
+                  returnKeyType="next"
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
+                />
               </Item>
               <Item stackedLabel>
-                <Label>password</Label>
-                <Input />
+                <Label>비밀번호</Label>
+                <Input
+                  returnKeyType="next"
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                  secureTextEntry
+                />
               </Item>
               <Item stackedLabel>
-                <Label>password check</Label>
-                <Input />
+                <Label>비밀번호 재확인</Label>
+                <Input
+                  returnKeyType="next"
+                  value={passwordCheck}
+                  onChangeText={(text) => setPasswordCheck(text)}
+                  secureTextEntry
+                />
+              </Item>
+              <View>
+                <Text>
+                  {password !== passwordCheck &&
+                    passwordCheck &&
+                    '비밀번호가 다릅니다.'}
+                </Text>
+              </View>
+              <Item stackedLabel>
+                <Label>이름</Label>
+                <Input
+                  returnKeyType="next"
+                  value={name}
+                  onChangeText={(text) => setName(text)}
+                />
               </Item>
               <Item stackedLabel>
-                <Label>school</Label>
-                <Input />
+                <Label>생년월일</Label>
+                <Input
+                  returnKeyType="next"
+                  value={birth}
+                  onChangeText={(text) => setBirth(text)}
+                />
               </Item>
               <Item stackedLabel>
-                <Label>grade</Label>
-                <Input />
+                <Label>닉네임</Label>
+                <Input
+                  returnKeyType="next"
+                  value={nickname}
+                  onChangeText={(text) => setNickname(text)}
+                />
+                <TouchableOpacity style={styles.nickNameDuplicate}>
+                  <Text>중복확인</Text>
+                </TouchableOpacity>
               </Item>
               <Item stackedLabel last>
-                <Label>nickname</Label>
-                <Input />
+                <Label>학교</Label>
+                <Input
+                  returnKeyType="next"
+                  value={school}
+                  onChangeText={(text) => setSchool(text)}
+                />
               </Item>
             </Form>
           </Content>
         </Container>
         <Text style={styles.txtSymbol}>{symbol}</Text>
       </View>
+      <View>
+        <TouchableOpacity
+          style={styles.signupButton}
+          onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}>
+          <Text style={styles.buttonText}>회원가입 완료</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
-
 
 export default SignUpScreen;

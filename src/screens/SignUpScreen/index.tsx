@@ -1,9 +1,20 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View,TouchableOpacity,Dimensions } from 'react-native';
 import {
   HomeScreens,
   HomeStackParamList,
 } from '../../navigators/HomeStackNavigators';
+import {
+  Container,
+  Header,
+  Content,
+  Form,
+  Item,
+  Input,
+  Label,
+  Button,
+} from 'native-base';
+import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type SignUpScreenNavigationProps = StackNavigationProp<
@@ -26,6 +37,16 @@ const styles = StyleSheet.create({
   btnLoginContainer: {
     alignSelf: 'center',
   },
+  buttonContainer: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.09,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -40,6 +61,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  footer: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.3,
+    bottom: 0,
+    flexDirection: 'column',
+    backgroundColor: '#9aa9ff',
+  },
   txtSymbol: {
     fontSize: 25,
     color: 'grey',
@@ -50,13 +78,45 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { symbol } = params;
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.txtSignupScreenContainer}>
-        <Text style={styles.txtSignupScreen}>회원가입 여기서</Text>
+      <Container>
+          <Content>
+            <Form>
+              <Item stackedLabel>
+                <Label>username</Label>
+                <Input />
+              </Item>
+              <Item stackedLabel>
+                <Label>password</Label>
+                <Input />
+              </Item>
+              <Item stackedLabel>
+                <Label>password check</Label>
+                <Input />
+              </Item>
+              <Item stackedLabel>
+                <Label>school</Label>
+                <Input />
+              </Item>
+              <Item stackedLabel>
+                <Label>grade</Label>
+                <Input />
+              </Item>
+              <Item stackedLabel last>
+                <Label>nickname</Label>
+                <Input />
+              </Item>
+            </Form>
+          </Content>
+        </Container>
         <Text style={styles.txtSymbol}>{symbol}</Text>
       </View>
     </SafeAreaView>
   );
 };
+
+
 export default SignUpScreen;

@@ -1,5 +1,13 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Dimensions } from 'react-native';
+import {
+  Container,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
+} from 'native-base';
 import {
   HomeScreens,
   HomeStackParamList,
@@ -28,9 +36,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    margin: 10,
+    justifyContent: 'space-between', //
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
   txtSignupScreen: {
     fontSize: 30,
@@ -44,6 +52,9 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: 'grey',
   },
+  tab: {
+    flex: 1,
+  },
 });
 
 const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
@@ -53,8 +64,29 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.txtSignupScreenContainer}>
-        <Text style={styles.txtSignupScreen}>DetailsScreen</Text>
+        <Text style={styles.txtSignupScreen}>DetjhjhjhjjhailsScreen</Text>
         <Text style={styles.txtSymbol}>{symbol}</Text>
+      </View>
+      <View>
+        <View style={styles.tab}>
+          <FooterTab>
+            <Button>
+              <Icon name="home" />
+            </Button>
+            <Button>
+              <Icon name="restaurant-outline" />
+            </Button>
+            <Button>
+              <Icon name="reader-outline" />
+            </Button>
+            <Button>
+              <Icon name="calendar-outline" />
+            </Button>
+            <Button>
+              <Icon name="grid-outline" />
+            </Button>
+          </FooterTab>
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 // 아까 HomeStackNavigator 에서 export 해줬던 타입들을 가지고 온다.
@@ -40,6 +41,9 @@ interface LoginScreenProps {
 }
 
 const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
   const { navigation } = props;
   const initialSymbol: string = '';
   const [symbol, setSymbol] = useState<string>(initialSymbol);
@@ -86,11 +90,24 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
               <Form>
                 <Item stackedLabel>
                   <Label>E-mail</Label>
-                  <Input />
+                  <Input
+                    returnKeyType="next"
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                    autoCapitalize="none"
+                    autoCompleteType="email"
+                    textContentType="emailAddress"
+                    keyboardType="email-address"
+                  />
                 </Item>
                 <Item stackedLabel last>
                   <Label>Password</Label>
-                  <Input />
+                  <Input
+                    returnKeyType="done"
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    secureTextEntry
+                  />
                 </Item>
               </Form>
             </Content>

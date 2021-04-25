@@ -6,6 +6,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 // 아까 HomeStackNavigator 에서 export 해줬던 타입들을 가지고 온다.
@@ -24,6 +25,7 @@ import {
   Button,
 } from 'native-base';
 import axios from 'axios';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // LoginScreen 에 필요한 파라미터들을 StackNavigationProp 으로 타입 명시해준다.
 type LoginScreenNavigationProps = StackNavigationProp<
@@ -71,80 +73,84 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.logo}>
-        <Image
-          style={{ height: '50%', width: '50%' }}
-          source={require('./logo.png')}
-        />
-      </View>
-      <View style={styles.content}>
-        <Container>
-          <Content>
-            <Form>
-              <Item stackedLabel>
-                <Label>Username</Label>
-                <Input />
-              </Item>
-              <Item stackedLabel last>
-                <Label>Password</Label>
-                <Input />
-              </Item>
-            </Form>
-          </Content>
-        </Container>
-      </View>
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => navigation.navigate(HomeScreens.Details, { symbol })}>
-          <Text style={styles.buttonText} onPress={login}>
-            로그인
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}>
-          <Text style={styles.buttonText}>회원가입</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView>
+        <View style={styles.logo}>
+          <Image
+            style={{ height: 100, width: 100 }}
+            source={require('./logo.png')}
+          />
+        </View>
+        <View style={styles.content}>
+          <Container>
+            <Content>
+              <Form>
+                <Item stackedLabel>
+                  <Label>E-mail</Label>
+                  <Input />
+                </Item>
+                <Item stackedLabel last>
+                  <Label>Password</Label>
+                  <Input />
+                </Item>
+              </Form>
+            </Content>
+          </Container>
+        </View>
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() =>
+              navigation.navigate(HomeScreens.Details, { symbol })
+            }>
+            <Text style={styles.buttonText} onPress={login}>
+              로그인
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}>
+            <Text style={styles.buttonText}>회원가입</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
-
+//keyboard로 인하여 레이아웃이 변하는 것을 막기 위해 ScrollView + window size 이용
+//Dimensions.get('window').width/height 를 통해 화면 사이즈를 가져옴.
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     justifyContent: 'center',
-    //alignItems: 'center',
+    alignItems: 'center',
     backgroundColor: 'black',
   },
   logo: {
-    width: '100%',
-    height: '40%',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.3,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
   },
   content: {
-    flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center',
-    //flexDirection: 'column',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.4,
+    justifyContent: 'center',
     backgroundColor: '#d6ca1a',
   },
   footer: {
-    width: '100%',
-    height: '20%',
-    //justifyContent: 'center',
-    alignItems: 'center',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.3,
+    bottom: 0,
+    flexDirection: 'column',
     backgroundColor: '#9aa9ff',
   },
   buttonContainer: {
-    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.09,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
-    borderRadius: 5,
   },
   buttonText: {
     fontSize: 20,

@@ -52,27 +52,31 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
   const login = async () => {
     console.log('로그인 클릭');
 
-    const headers = {
-      'Content-Type': 'application/json',
-    };
+    // const headers = {
+    //   'Content-Type': 'application/json',
+    // };
 
-    const result = await axios.post(
-      'http://localhost:4000/api/user',
-      { headers },
-      {
-        params: {
-          email: 'email',
-          nickName: '얏얏',
-          password: '1234',
-          name: '윤태진',
-          schoolID: '151515',
-          grade: 4,
-          class: 3,
-        },
+    // const result = await axios.post(
+    //   'http://localhost:4000/api/login',
+    //   { headers },
+    //   {
+    //     params: {
+    //       email,
+    //       password,
+    //     },
+    //   },
+    // );
+    const result = await axios.get('http://localhost:4000/api/login', {
+      params: {
+        email,
+        password,
       },
-    );
+    });
 
-    console.log(result);
+    if (result) {
+      // 가져온 데이터 로컬 저장소에 저장하는 코드 추가
+      navigation.navigate(HomeScreens.Details, { symbol });
+    }
   };
 
   return (
@@ -114,11 +118,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
           </Container>
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() =>
-              navigation.navigate(HomeScreens.Details, { symbol })
-            }>
+          <TouchableOpacity style={styles.buttonContainer}>
             <Text style={styles.buttonText} onPress={login}>
               로그인
             </Text>

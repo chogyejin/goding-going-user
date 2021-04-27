@@ -89,8 +89,22 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [password, setPassword] = useState<string>('');
   const [passwordCheck, setPasswordCheck] = useState<string>('');
   const [name, setName] = useState<string>('');
-  const [nickname, setNickname] = useState<string>('');
+  const [nickName, setNickname] = useState<string>('');
   const [school, setSchool] = useState('');
+
+  const checkNickName = async () => {
+    const result = await axios.get('http://localhost:4000/api/checkNickName', {
+      params: {
+        nickName,
+      },
+    });
+    console.log(result);
+    if (result.data) {
+      alert('닉네임 사용 가능');
+    } else {
+      alert('닉네임 불가능');
+    }
+  };
 
   const { navigation, route } = props;
   const { params } = route;
@@ -171,8 +185,11 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
       <View>
         <TouchableOpacity
           style={styles.signupButton}
-          onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}>
-          <Text style={styles.buttonText}>회원가입 완료</Text>
+          // onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}
+        >
+          <Text style={styles.buttonText} onPress={signUpAccount}>
+            회원가입 완료
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -89,7 +89,6 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [password, setPassword] = useState<string>('');
   const [passwordCheck, setPasswordCheck] = useState<string>('');
   const [name, setName] = useState<string>('');
-  const [birth, setBirth] = useState('');
   const [nickname, setNickname] = useState<string>('');
   const [school, setSchool] = useState('');
 
@@ -144,23 +143,16 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
                   onChangeText={(text) => setName(text)}
                 />
               </Item>
-              <Item stackedLabel>
-                <Label>생년월일</Label>
-                <Input
-                  returnKeyType="next"
-                  value={birth}
-                  onChangeText={(text) => setBirth(text)}
-                />
-              </Item>
+
               <Item stackedLabel>
                 <Label>닉네임</Label>
                 <Input
                   returnKeyType="next"
-                  value={nickname}
+                  value={nickName}
                   onChangeText={(text) => setNickname(text)}
                 />
                 <TouchableOpacity style={styles.nickNameDuplicate}>
-                  <Text>중복확인</Text>
+                  <Text onPress={checkNickName}>중복확인</Text>
                 </TouchableOpacity>
               </Item>
               <Item stackedLabel last>

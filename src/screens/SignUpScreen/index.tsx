@@ -90,7 +90,39 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [passwordCheck, setPasswordCheck] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [nickName, setNickname] = useState<string>('');
-  const [school, setSchool] = useState('');
+  const [grade, setGrade] = useState<number>(0);
+  const [classNumber, setClassNumber] = useState<number>(0);
+  const [schoolName, setSchoolName] = useState('');
+  const [schoolID, setSchoolID] = useState('');
+  const [schools, setSchools] = useState([]);
+
+  const signUpAccount = async () => {
+    console.log(email);
+    console.log(password);
+    console.log(name);
+    console.log(nickName);
+    console.log(schoolID);
+
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    const result = await axios.post(
+      'http://localhost:4000/api/signUp',
+      { headers },
+      {
+        params: {
+          email,
+          password,
+          name,
+          nickName,
+          schoolID,
+          grade: 1,
+          classNumber: 3,
+        },
+      },
+    );
+  };
 
   const checkNickName = async () => {
     const result = await axios.get('http://localhost:4000/api/checkNickName', {
@@ -104,6 +136,21 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
     } else {
       alert('닉네임 불가능');
     }
+  };
+
+  const getSchools = async () => {
+    const result = await axios.get('http://localhost:4000/api/schools', {
+      params: {
+        name: schoolName,
+      },
+    });
+
+    setSchools(result.data);
+    console.log(result.data);
+  };
+
+  const selectSchool = (schoolID: string) => () => {
+    setSchoolID(schoolID);
   };
 
   const { navigation, route } = props;
@@ -173,9 +220,20 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
                 <Label>학교</Label>
                 <Input
                   returnKeyType="next"
-                  value={school}
-                  onChangeText={(text) => setSchool(text)}
+                  value={schoolName}
+                  onChangeText={(text) => setSchoolName(text)}
                 />
+                <TouchableOpacity style={styles.nickNameDuplicate}>
+                  <Text onPress={getSchools}>검색</Text>
+                </TouchableOpacity>
+                {schools.map((school) => (
+                  <Text key={school.id}>
+                    {school.name}
+                    <Button onPress={selectSchool(school.id)}>
+                      <Text>선택 </Text>
+                    </Button>
+                  </Text>
+                ))}
               </Item>
             </Form>
           </Content>

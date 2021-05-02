@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,6 +6,8 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import {
   HomeScreens,
@@ -23,6 +25,7 @@ import {
 } from 'native-base';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type SignUpScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -40,50 +43,6 @@ interface SignUpScreenProps {
   navigation: SignUpScreenNavigationProps;
 }
 
-const styles = StyleSheet.create({
-  btnLoginContainer: {
-    alignSelf: 'center',
-  },
-  signupButton: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.09,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 20,
-    color: 'black',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    margin: 10,
-  },
-  txtSignupScreen: {
-    fontSize: 30,
-  },
-  txtSignupScreenContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  footer: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.3,
-    bottom: 0,
-    flexDirection: 'column',
-    backgroundColor: '#9aa9ff',
-  },
-  txtSymbol: {
-    fontSize: 25,
-    color: 'grey',
-  },
-  nickNameDuplicate: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 5,
-  },
-});
-
 const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -95,6 +54,13 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [schoolName, setSchoolName] = useState('');
   const [schoolID, setSchoolID] = useState('');
   const [schools, setSchools] = useState([]);
+  const [disabled, setDisabled] = useState(true); // 모든 정보 미입력 -> 버튼 불가
+
+  useEffect(() => {
+    setDisabled(
+      !(email && password && name && nickName && schoolID && passwordCheck),
+    );
+  }, [email, password, name, nickName, schoolID, passwordCheck]);
 
   const signUpAccount = async () => {
     console.log(email);
@@ -158,100 +124,165 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const { symbol } = params;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.txtSignupScreenContainer}>
-        <Container>
-          <Content>
-            <Form>
-              <Item stackedLabel>
-                <Label>이메일</Label>
-                <Input
-                  returnKeyType="next"
-                  value={email}
-                  onChangeText={(text) => setEmail(text)}
-                />
-              </Item>
-              <Item stackedLabel>
-                <Label>비밀번호</Label>
-                <Input
-                  returnKeyType="next"
-                  value={password}
-                  onChangeText={(text) => setPassword(text)}
-                  secureTextEntry
-                />
-              </Item>
-              <Item stackedLabel>
-                <Label>비밀번호 재확인</Label>
-                <Input
-                  returnKeyType="next"
-                  value={passwordCheck}
-                  onChangeText={(text) => setPasswordCheck(text)}
-                  secureTextEntry
-                />
-              </Item>
-              <View>
-                <Text>
-                  {password !== passwordCheck &&
-                    passwordCheck &&
-                    '비밀번호가 다릅니다.'}
-                </Text>
-              </View>
-              <Item stackedLabel>
-                <Label>이름</Label>
-                <Input
-                  returnKeyType="next"
-                  value={name}
-                  onChangeText={(text) => setName(text)}
-                />
-              </Item>
-
-              <Item stackedLabel>
-                <Label>닉네임</Label>
-                <Input
-                  returnKeyType="next"
-                  value={nickName}
-                  onChangeText={(text) => setNickname(text)}
-                />
-                <TouchableOpacity style={styles.nickNameDuplicate}>
-                  <Text onPress={checkNickName}>중복확인</Text>
-                </TouchableOpacity>
-              </Item>
-              <Item stackedLabel last>
-                <Label>학교</Label>
-                <Input
-                  returnKeyType="next"
-                  value={schoolName}
-                  onChangeText={(text) => setSchoolName(text)}
-                />
-                <TouchableOpacity style={styles.nickNameDuplicate}>
-                  <Text onPress={getSchools}>검색</Text>
-                </TouchableOpacity>
-                {schools.map((school) => (
-                  <Text key={school.id}>
-                    {school.name}
-                    <Button onPress={selectSchool(school.id)}>
-                      <Text>선택 </Text>
-                    </Button>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={styles.txtSignupScreenContainer}>
+            <Content>
+              <Form>
+                <Item stackedLabel>
+                  <Label>이메일</Label>
+                  <Input
+                    returnKeyType="next"
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                  />
+                </Item>
+                <Item stackedLabel>
+                  <Label>비밀번호</Label>
+                  <Input
+                    placeholder="비밀번호 입력"
+                    placeholderTextColor="#DDDDDD"
+                    style={{ fontSize: 12 }}
+                    returnKeyType="next"
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    secureTextEntry
+                  />
+                </Item>
+                <Item stackedLabel>
+                  <Input
+                    placeholder="비밀번호 재입력"
+                    placeholderTextColor="#DDDDDD"
+                    style={{ fontSize: 12 }}
+                    returnKeyType="next"
+                    value={passwordCheck}
+                    onChangeText={(text) => setPasswordCheck(text)}
+                    secureTextEntry
+                  />
+                </Item>
+                <View>
+                  <Text>
+                    {password !== passwordCheck &&
+                      passwordCheck &&
+                      '비밀번호가 다릅니다.'}
                   </Text>
-                ))}
-              </Item>
-            </Form>
-          </Content>
-        </Container>
-        <Text style={styles.txtSymbol}>{symbol}</Text>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={styles.signupButton}
-          // onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}
-        >
-          <Text style={styles.buttonText} onPress={signUpAccount}>
-            회원가입 완료
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+                </View>
+                <Item stackedLabel>
+                  <Label>이름</Label>
+                  <Input
+                    returnKeyType="next"
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                  />
+                </Item>
+
+                <Item stackedLabel>
+                  <Label>닉네임</Label>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Input
+                      returnKeyType="next"
+                      value={nickName}
+                      onChangeText={(text) => setNickname(text)}
+                      //maxLength={10} //최대글자수
+                    />
+                    <TouchableOpacity style={styles.nickNameDuplicate}>
+                      <Text onPress={checkNickName}>중복확인</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Item>
+                <Item stackedLabel last>
+                  <Label>학교</Label>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Input
+                      returnKeyType="next"
+                      value={schoolName}
+                      onChangeText={(text) => setSchoolName(text)}
+                    />
+                    <TouchableOpacity style={styles.nickNameDuplicate}>
+                      <Text onPress={getSchools}>검색</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {schools.map((school) => (
+                    <Text key={school.id}>
+                      {school.name}
+                      <Button onPress={selectSchool(school.id)}>
+                        <Text>선택 </Text>
+                      </Button>
+                    </Text>
+                  ))}
+                </Item>
+              </Form>
+            </Content>
+
+            <Text style={styles.txtSymbol}>{symbol}</Text>
+          </View>
+          <View style={{ alignItems: 'center', marginTop: 30 }}>
+            <TouchableOpacity
+              onPress={signUpAccount}
+              disabled={disabled}
+              style={disabled ? styles.disabled : styles.buttonContainer}
+              //onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}
+            >
+              <Text style={styles.buttonText}>회원가입 완료</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
+
+const styles = StyleSheet.create({
+  btnLoginContainer: {
+    alignSelf: 'center',
+  },
+  buttonContainer: {
+    width: 300,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    borderRadius: 10,
+    backgroundColor: '#1388c2',
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    margin: 10,
+    backgroundColor: 'white',
+  },
+  txtSignupScreen: {
+    fontSize: 30,
+  },
+  txtSignupScreenContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  txtSymbol: {
+    fontSize: 25,
+    color: 'grey',
+  },
+  nickNameDuplicate: {
+    height: 30,
+    alignItems: 'center',
+    borderRadius: 5,
+    backgroundColor: '#DDDDDD',
+    padding: 5,
+  },
+  disabled: {
+    width: 300,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    borderRadius: 10,
+    backgroundColor: '#596c75',
+  },
+});
 
 export default SignUpScreen;

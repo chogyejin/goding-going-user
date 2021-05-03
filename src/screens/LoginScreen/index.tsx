@@ -6,27 +6,17 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Dimensions,
-  TextInput,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+
 import { StackNavigationProp } from '@react-navigation/stack';
 // 아까 HomeStackNavigator 에서 export 해줬던 타입들을 가지고 온다.
 import {
   HomeScreens,
   HomeStackParamList,
 } from '../../navigators/HomeStackNavigators';
-import {
-  Container,
-  Header,
-  Content,
-  Form,
-  Item,
-  Input,
-  Label,
-  Button,
-} from 'native-base';
+import { Form, Item, Input, Label, Button } from 'native-base';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -53,11 +43,6 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
   const [symbol, setSymbol] = useState<string>(initialSymbol);
   // LoginScreenProps 에 navigation 이 있으니까 비구조화 할당으로 꺼내쓸 수 있음
 
-  useEffect(() => {
-    setDisabled(!(email && password));
-  }, [email, password]);
-  //email, pswd 미입력 -> diasbled button
-
   const login = async () => {
     console.log('로그인 클릭');
 
@@ -81,14 +66,21 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
         password,
       },
     });
-
     if (result) {
       // 가져온 데이터 로컬 저장소에 저장하는 코드 추가
-      //AsyncStorage.setItem('result', JSON.stringify(result));
-      //result 를 string type으로
+      AsyncStorage.setItem('UserID', JSON.stringify(result.data.user.id));
+      AsyncStorage.setItem(
+        'SchoolID',
+        JSON.stringify(result.data.user.schoolID),
+      );
       navigation.navigate(HomeScreens.Details, { symbol });
     }
   };
+
+  useEffect(() => {
+    setDisabled(!(email && password));
+  }, [email, password]);
+  //email, pswd 미입력 -> diasbled button
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -150,8 +142,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
     </TouchableWithoutFeedback>
   );
 };
-//keyboard로 인하여 레이아웃이 변하는 것을 막기 위해 ScrollView + window size 이용
-//Dimensions.get('window').width/height 를 통해 화면 사이즈를 가져옴.
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',

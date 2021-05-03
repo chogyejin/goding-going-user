@@ -55,12 +55,29 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [schoolID, setSchoolID] = useState('');
   const [schools, setSchools] = useState([]);
   const [disabled, setDisabled] = useState(true); // 모든 정보 미입력 -> 버튼 불가
+  const [checkedNickname, setCheckedNickname] = useState(false);
 
   useEffect(() => {
     setDisabled(
-      !(email && password && name && nickName && schoolID && passwordCheck),
+      !(
+        email &&
+        password &&
+        name &&
+        nickName &&
+        schoolID &&
+        passwordCheck &&
+        checkedNickname
+      ),
     );
-  }, [email, password, name, nickName, schoolID, passwordCheck]);
+  }, [
+    email,
+    password,
+    name,
+    nickName,
+    schoolID,
+    passwordCheck,
+    checkedNickname,
+  ]);
 
   const signUpAccount = async () => {
     console.log(email);
@@ -98,6 +115,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
     });
     console.log(result);
     if (result.data) {
+      setCheckedNickname(true); //닉네임 중복확인이 되어야 회원가입이 가능하도록
       alert('닉네임 사용 가능');
     } else {
       alert('닉네임 불가능');
@@ -253,7 +271,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    margin: 10,
+    margin: 5,
     backgroundColor: 'white',
   },
   txtSignupScreen: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -30,30 +30,20 @@ interface BoardScreenProps {
 const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const { navigation } = props;
 
+  useEffect(() => {
+    console.log('렌덜링이 완료');
+  });
+
+  console.log('렌더링');
+
   return (
     <SafeAreaView>
       <Text style={styles.ScreenTitle}>board 테스트</Text>
       <View style={styles.container}>
         <View>
           <TouchableOpacity>
-            <Text
-              style={styles.BoardTitle}
-              onPress={() =>   }>
-              게시판1
-            </Text>
+            <Text style={styles.BoardTitle}>게시판1</Text>
           </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.BoardTitle}>게시판2</TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.BoardTitle}>게시판3</TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.BoardTitle}>게시판4</TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.BoardTitle}>게시판5</TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

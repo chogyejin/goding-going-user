@@ -13,6 +13,7 @@ import {
   HomeStackParamList,
 } from '../../navigators/HomeStackNavigators';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { NavigationActions } from 'react-navigation';
 
 type DetailsScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -76,7 +77,10 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
             <Button>
               <Icon name="restaurant-outline" />
             </Button>
-            <Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
               <Icon name="reader-outline" />
             </Button>
             <Button>

@@ -23,7 +23,6 @@ export type BoardParams = {
 };
 
 interface BoardScreenProps {
-  route: { params: BoardParams };
   navigation: BoardScreenNavigationProps;
 }
 
@@ -35,12 +34,12 @@ interface Post {
 }
 const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const { navigation } = props;
-  const [userID, setUserID] = useState('');
+  const [symbol, setSymbol] = useState<string>('');
   const [posts, setPosts] = useState<Post[]>([]);
-  // posts 타입 정의해주기
   const movePost = (postID: string) => () => {
     // 게시글 상세 페이지로 이동한다.
     // 이동할 때 postID를 같이 넘겨서 이동한다.
+    navigation.navigate(HomeScreens.BoardDetail, { symbol });
 
     console.log('asd');
   };

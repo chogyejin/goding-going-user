@@ -10,7 +10,10 @@ import {
   HomeScreens,
   HomeStackParamList,
 } from '../../navigators/HomeStackNavigators';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
 import axios from 'axios';
 
 type BoardScreenNavigationProps = StackNavigationProp<
@@ -18,9 +21,7 @@ type BoardScreenNavigationProps = StackNavigationProp<
   HomeScreens.Board
 >;
 
-export type BoardParams = {
-  symbol: string;
-};
+export type BoardParams = {};
 
 interface BoardScreenProps {
   navigation: BoardScreenNavigationProps;
@@ -34,20 +35,14 @@ interface Post {
 }
 const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const { navigation } = props;
-  const [symbol, setSymbol] = useState<string>('');
   const [posts, setPosts] = useState<Post[]>([]);
+
   const movePost = (postID: string) => () => {
     // 게시글 상세 페이지로 이동한다.
     // 이동할 때 postID를 같이 넘겨서 이동한다.
-    navigation.navigate(HomeScreens.BoardDetail, { symbol });
-
-    console.log('asd');
+    const postID = '123123'; //임시 postID
+    navigation.navigate(HomeScreens.BoardDetail, { postID });
   };
-
-  // 이 아래있는 주석은 다른 파일에서 이뤄지는 행동(게시글 상세 페이지가 새로 생겨야 한다.)
-  // 게시글 상세 페이지에서는 받은 postID를 통해서
-  // useEfeect 코드를 통해 그 post.id로 api요청을 하고
-  // 요청해서 받ㅇ느 데이터를 state저장해서 보여주면 된다.
 
   useEffect(() => {
     async function getPost() {
@@ -105,6 +100,3 @@ const styles = StyleSheet.create({
 });
 
 export default BoardScreen;
-function async() {
-  throw new Error('Function not implemented.');
-}

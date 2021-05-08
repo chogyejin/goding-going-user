@@ -36,6 +36,7 @@ interface Post {
 const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const { navigation } = props;
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isFirstLoad, setIsFirstLoad] = useState<Boolean>(true);
 
   const movePost = (postID: string) => () => {
     navigation.navigate(HomeScreens.BoardDetail, { postID });
@@ -50,10 +51,12 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
       });
 
       if (result.data) {
-        if (posts.length === 0) {
-          setPosts(result.data.posts);
+        const existsPosts = result.data.posts.length > 0;
+        if (isFirstLoad || existsPosts) {
+          setIsFirstLoad(false);
+          console.log(result.data.posts);
+          setPosts(result.data.posts || []);
         }
-        console.log(posts[0]);
       } else {
         console.log('실패');
       }

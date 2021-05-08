@@ -39,6 +39,10 @@ interface IPost {
   recommendUserIDs: string;
   createdAt: string;
   updatedAt: string;
+  user: {
+    nickname: string;
+    userId: string;
+  };
 }
 
 // 게시글 상세 페이지에서는 받은 postID를 통해서
@@ -59,6 +63,10 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
     recommendUserIDs: '',
     createdAt: '',
     updatedAt: '',
+    user: {
+      nickname: '',
+      userId: '',
+    },
   });
 
   useEffect(() => {
@@ -68,16 +76,18 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
           postID,
         },
       });
+      console.log(result);
       if (result && !isCompletedLoading) {
         console.log('성공');
         setIsCompletedLoading(true);
-        setPost(result.data.post);
+        console.log();
+        setPost(result.data.post.dataValues);
       } else {
-        console.log('실패');
       }
     }
+
     getPost();
-  });
+  }, [post]);
 
   return (
     <SafeAreaView>
@@ -87,7 +97,7 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
         <Text>작성시간</Text>
       </View>
       <View style={styles.subTitle}>
-        <Text>{post.title}</Text>
+        <Text>{post.title} 호로로롱</Text>
         <Text>{post.createdAt}</Text>
       </View>
     </SafeAreaView>

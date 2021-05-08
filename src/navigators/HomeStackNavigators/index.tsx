@@ -8,6 +8,10 @@ import BoardScreen, { BoardParams } from '../../screens/BoardScreen';
 import BoardDetail, {
   BoardDetailParams,
 } from '../../screens/BoardScreen/BoardDetail';
+import EtcScreen, { EtcParams } from '../../screens/EtcScreen';
+import TeacherTip, {
+  TeacherTipParams,
+} from '../../screens/EtcScreen/TeacherTip';
 
 // Home Screen 에서 필요한 스택은 2개 - 메인, 디테일
 
@@ -18,6 +22,8 @@ export enum HomeScreens {
   SignUp = 'SignUp',
   Board = 'Board',
   BoardDetail = 'BoardDetail',
+  Etc = 'Etc',
+  TeacherTip = 'TeacherTip',
 }
 
 // 2. 각 스크린 마다 필요한 파라미터 타입 정의
@@ -27,6 +33,8 @@ export type HomeStackParamList = {
   SignUp: SignUpParams;
   Board: BoardParams;
   BoardDetail: BoardDetailParams;
+  Etc: EtcParams;
+  TeacherTip: TeacherTipParams;
 };
 
 // 3. 방금 만든 타입을 createStackNavigator 메소드 앞에 지정해주서 HomeStack 네비게이터 객체를 만들어줌.
@@ -42,6 +50,8 @@ const HomeStackNavigator: React.FunctionComponent = () => {
         name={HomeScreens.BoardDetail}
         component={BoardDetail}
       />
+      <HomeStack.Screen name={HomeScreens.Etc} component={EtcScreen} />
+      <HomeStack.Screen name={HomeScreens.TeacherTip} component={TeacherTip} />
     </HomeStack.Navigator>
   );
 };

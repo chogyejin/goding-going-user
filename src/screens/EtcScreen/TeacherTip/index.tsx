@@ -32,13 +32,13 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
   const { symbol } = params;
   return (
     <SafeAreaView>
-      <Text style={styles.EtcTitle}>선생님 팁 게시판 타이틀</Text>
+      <Text style={styles.TeacherTipTitle}>선생님 팁 게시판 타이틀</Text>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  EtcTitle: {
+  TeacherTipTitle: {
     fontSize: 30,
   },
 });

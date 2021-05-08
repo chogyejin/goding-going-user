@@ -32,10 +32,17 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
   const { symbol } = params;
   return (
     <SafeAreaView>
-      <Text style={styles.EtcTitle}>여기는 기타 기능 탭</Text>
+      <Text style={styles.EtcTitle}>여기는 기타 기능을 모은 탭</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}>
+        style={styles.listButton}
+        onPress={() => navigation.navigate(HomeScreens.TeacherTip, { symbol })}>
         <Text>선생님 팁 게시판 버튼</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.listButton}>
+        <Text>다른 리스트2 버튼</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.listButton}>
+        <Text>다른 리스트3 버튼</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -44,6 +51,18 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
 const styles = StyleSheet.create({
   EtcTitle: {
     fontSize: 30,
+  },
+  listButton: {
+    marginTop: 16,
+    paddingVertical: 8,
+    borderWidth: 4,
+    borderColor: '#20232a',
+    borderRadius: 6,
+    backgroundColor: '#61dafb',
+    color: '#20232a',
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
   },
 });
 

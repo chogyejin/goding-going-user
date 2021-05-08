@@ -26,6 +26,7 @@ import {
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ScrollView } from 'react-native-gesture-handler';
+import { validateEmail } from '../../validation/validateEmail';
 
 type SignUpScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -53,11 +54,14 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [classNumber, setClassNumber] = useState<number>(0);
   const [schoolName, setSchoolName] = useState('');
   const [schoolID, setSchoolID] = useState('');
-  const [schools, setSchools] = useState([]);
+  const [schools, setSchools] = useState<Array<{ id: string; name: string }>>(
+    [],
+  );
   const [disabled, setDisabled] = useState(true); // 모든 정보 미입력 -> 버튼 불가
   const [checkedNickname, setCheckedNickname] = useState(false);
 
   useEffect(() => {
+    console.log('돌아감');
     setDisabled(
       !(
         email &&
@@ -80,6 +84,10 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   ]);
 
   const signUpAccount = async () => {
+    if (!validateEmail(email)) {
+      alert('이메일 형식이 잘못되었습니다.');
+      return;
+    }
     console.log(email);
     console.log(password);
     console.log(name);
@@ -105,6 +113,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
         },
       },
     );
+    navigation.navigate(HomeScreens.Details, { symbol });
   };
 
   const checkNickName = async () => {
@@ -154,7 +163,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
                   <Input
                     returnKeyType="next"
                     value={email}
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text: string) => setEmail(text)}
                   />
                 </Item>
                 <Item stackedLabel>
@@ -226,7 +235,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
                     <Text key={school.id}>
                       {school.name}
                       <Button onPress={selectSchool(school.id)}>
-                        <Text>선택 </Text>
+                        <Text> 선택 </Text>
                       </Button>
                     </Text>
                   ))}

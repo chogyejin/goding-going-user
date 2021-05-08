@@ -20,7 +20,7 @@ import { Form, Item, Input, Label, Button } from 'native-base';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
-import {validateEmail} from '../../validation/validateEmail'
+
 // LoginScreen 에 필요한 파라미터들을 StackNavigationProp 으로 타입 명시해준다.
 type LoginScreenNavigationProps = StackNavigationProp<
   HomeStackParamList, // navigators/HomeStackNavigators/index.tsx 에서 지정했던 HomeStackParamList
@@ -68,17 +68,11 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
     });
     if (result) {
       // 가져온 데이터 로컬 저장소에 저장하는 코드 추가
-      AsyncStorage.setItem('UserID', JSON.stringify(result.data.user.id));
-      AsyncStorage.setItem(
-        'SchoolID',
-        JSON.stringify(result.data.user.schoolID),
-      );
+      AsyncStorage.setItem('userID', result.data.user.id);
+      AsyncStorage.setItem('schoolID', result.data.user.schoolIDex);
       navigation.navigate(HomeScreens.Details, { symbol });
     }
-
-   
   };
- 
 
   useEffect(() => {
     setDisabled(!(email && password));
@@ -103,7 +97,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
                   <Input
                     returnKeyType="next"
                     value={email}
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text: string) => setEmail(text)}
                     autoCapitalize="none"
                     autoCompleteType="email"
                     textContentType="emailAddress"

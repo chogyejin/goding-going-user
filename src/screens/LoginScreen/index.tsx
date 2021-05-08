@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,27 +6,20 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Dimensions,
-  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
+
 import { StackNavigationProp } from '@react-navigation/stack';
 // 아까 HomeStackNavigator 에서 export 해줬던 타입들을 가지고 온다.
 import {
   HomeScreens,
   HomeStackParamList,
 } from '../../navigators/HomeStackNavigators';
-import {
-  Container,
-  Header,
-  Content,
-  Form,
-  Item,
-  Input,
-  Label,
-  Button,
-} from 'native-base';
+import { Form, Item, Input, Label, Button } from 'native-base';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // LoginScreen 에 필요한 파라미터들을 StackNavigationProp 으로 타입 명시해준다.
 type LoginScreenNavigationProps = StackNavigationProp<
@@ -43,6 +36,7 @@ interface LoginScreenProps {
 const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [disabled, setDisabled] = useState(true); // email,pswd 미입력 -> 버튼 불가
 
   const { navigation } = props;
   const initialSymbol: string = '';
@@ -72,32 +66,38 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
         password,
       },
     });
-
     if (result) {
       // 가져온 데이터 로컬 저장소에 저장하는 코드 추가
+      AsyncStorage.setItem('userID', result.data.user.id);
+      AsyncStorage.setItem('schoolID', result.data.user.schoolIDex);
       navigation.navigate(HomeScreens.Details, { symbol });
     }
   };
 
+  useEffect(() => {
+    setDisabled(!(email && password));
+  }, [email, password]);
+  //email, pswd 미입력 -> diasbled button
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.logo}>
-          <Image
-            style={{ height: 100, width: 100 }}
-            source={require('./logo.png')}
-          />
-        </View>
-        <View style={styles.content}>
-          <Container>
-            <Content>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={{ margin: 10 }}>
+            <View style={styles.logo}>
+              <Image
+                style={{ height: 100, width: 100 }}
+                source={require('./logo.png')}
+              />
+            </View>
+            <View style={styles.content}>
               <Form>
                 <Item stackedLabel>
-                  <Label>E-mail</Label>
+                  <Label style={styles.labelText}>E-mail</Label>
                   <Input
                     returnKeyType="next"
                     value={email}
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text: string) => setEmail(text)}
                     autoCapitalize="none"
                     autoCompleteType="email"
                     textContentType="emailAddress"
@@ -105,7 +105,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
                   />
                 </Item>
                 <Item stackedLabel last>
-                  <Label>Password</Label>
+                  <Label style={styles.labelText}>Password</Label>
                   <Input
                     returnKeyType="done"
                     value={password}
@@ -114,64 +114,80 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
                   />
                 </Item>
               </Form>
-            </Content>
-          </Container>
-        </View>
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.buttonContainer}>
-            <Text style={styles.buttonText} onPress={login}>
-              로그인
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}>
-            <Text style={styles.buttonText}>회원가입</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              <View>
+                <TouchableOpacity
+                  onPress={login}
+                  disabled={disabled}
+                  style={disabled ? styles.disabled : styles.buttonContainer}>
+                  <Text style={styles.buttonText}>로그인</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(HomeScreens.SignUp, { symbol })
+                  }>
+                  <Text style={styles.buttonText}>회원가입</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
-//keyboard로 인하여 레이아웃이 변하는 것을 막기 위해 ScrollView + window size 이용
-//Dimensions.get('window').width/height 를 통해 화면 사이즈를 가져옴.
+
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black',
-  },
-  logo: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.3,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column',
     backgroundColor: '#fff',
   },
-  content: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.4,
-    justifyContent: 'center',
-    backgroundColor: '#d6ca1a',
+  logo: {
+    //flex: 1,
+    //width: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    marginTop: 30,
   },
-  footer: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.3,
-    bottom: 0,
-    flexDirection: 'column',
-    backgroundColor: '#9aa9ff',
+  content: {
+    flex: 1,
+    width: 300,
+    marginTop: 50,
+    marginBottom: 50,
+    alignItems: 'stretch',
   },
   buttonContainer: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.09,
+    width: 300,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 5,
+    borderRadius: 10,
+    backgroundColor: '#1388c2',
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 15,
     color: 'white',
+  },
+  labelText: {
+    color: '#1388c2',
+  },
+  disabled: {
+    width: 300,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    borderRadius: 10,
+    backgroundColor: '#596c75',
+    //opacity: 0.2,
   },
 });
 

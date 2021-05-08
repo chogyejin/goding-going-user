@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -30,6 +30,7 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { symbol } = params;
+  
   return (
     <SafeAreaView>
       <Text style={styles.EtcTitle}>여기는 기타 기능을 모은 탭</Text>

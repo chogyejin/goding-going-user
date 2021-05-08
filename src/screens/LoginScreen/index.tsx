@@ -69,15 +69,26 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
     if (result) {
       // 가져온 데이터 로컬 저장소에 저장하는 코드 추가
       AsyncStorage.setItem('userID', result.data.user.id);
-      AsyncStorage.setItem('schoolID', result.data.user.schoolIDex);
+      AsyncStorage.setItem('schoolID', result.data.user.schoolID);
       navigation.navigate(HomeScreens.Details, { symbol });
     }
   };
 
+  //email, pswd 미입력 -> diasbled button
   useEffect(() => {
     setDisabled(!(email && password));
   }, [email, password]);
-  //email, pswd 미입력 -> diasbled button
+
+  //login 정보가 있으면 바로 detail page로 이동
+  useEffect(() => {
+    async function isLogin() {
+      const asyncUserID = await AsyncStorage.getItem('userID');
+      if (asyncUserID) {
+        navigation.navigate(HomeScreens.Details, { symbol });
+      }
+    }
+    isLogin();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

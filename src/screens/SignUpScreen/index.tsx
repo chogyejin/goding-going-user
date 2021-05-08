@@ -143,8 +143,10 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
     console.log(result.data);
   };
 
-  const selectSchool = (schoolID: string) => () => {
+  const selectSchool = (schoolID: string, schoolName: string) => () => {
     setSchoolID(schoolID);
+    setSchoolName(schoolName);
+    setSchools([]);
   };
 
   const { navigation, route } = props;
@@ -234,7 +236,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
                   {schools.map((school) => (
                     <Text key={school.id}>
                       {school.name}
-                      <Button onPress={selectSchool(school.id)}>
+                      <Button onPress={selectSchool(school.id, school.name)}>
                         <Text> 선택 </Text>
                       </Button>
                     </Text>

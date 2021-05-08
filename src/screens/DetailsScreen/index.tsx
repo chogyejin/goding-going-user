@@ -86,7 +86,8 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
             <Button>
               <Icon name="calendar-outline" />
             </Button>
-            <Button>
+            <Button
+              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
               <Icon name="grid-outline" />
             </Button>
           </FooterTab>

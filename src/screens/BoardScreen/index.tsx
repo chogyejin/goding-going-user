@@ -38,9 +38,6 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const movePost = (postID: string) => () => {
-    // 게시글 상세 페이지로 이동한다.
-    // 이동할 때 postID를 같이 넘겨서 이동한다.
-    const postID = '123123'; //임시 postID
     navigation.navigate(HomeScreens.BoardDetail, { postID });
   };
 

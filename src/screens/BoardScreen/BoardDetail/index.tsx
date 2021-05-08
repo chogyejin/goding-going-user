@@ -29,8 +29,16 @@ interface BoardDetailProps {
   navigation: BoardDetailNavigationProps;
 }
 
-interface Post {
-  post: string;
+interface IPost {
+  id: string;
+  schoolID: string;
+  title: string;
+  contents: string;
+  userID: string;
+  hits: number;
+  recommendUserIDs: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // 게시글 상세 페이지에서는 받은 postID를 통해서
@@ -40,31 +48,46 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { postID } = params;
-  const [post, setPost] = useState<Post>();
+  const [post, setPost] = useState<IPost>({
+    id: '',
+    schoolID: '',
+    title: '',
+    contents: '',
+    userID: '',
+    hits: 0,
+    recommendUserIDs: '',
+    createdAt: '',
+    updatedAt: '',
+  });
 
   useEffect(() => {
-    async function showPost() {
-      const result = await axios.get('http://localhost:4000/api/posts', {
+    async function getPost() {
+      const result = await axios.get('http://localhost:4000/api/post', {
         params: {
-          postID: postID,
+          postID,
         },
       });
-
       if (result) {
         console.log('성공');
-        setPost(post);
+        setPost(result.data.post);
       } else {
         console.log('실패');
       }
     }
-    showPost();
+    getPost();
   });
 
   return (
     <SafeAreaView>
       <Text style={styles.BoardDetailTitle}>게시판 상세</Text>
-      <Text style={styles.BoardDetailTitle}>{postID}</Text>
-      <Text style={styles.BoardDetailTitle}>{post}</Text>
+      <View style={styles.subTitle}>
+        <Text>제목</Text>
+        <Text>작성시간</Text>
+      </View>
+      <View style={styles.subTitle}>
+        <Text>{post.title}</Text>
+        <Text>{post.createdAt}</Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -72,6 +95,9 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
 const styles = StyleSheet.create({
   BoardDetailTitle: {
     fontSize: 30,
+  },
+  subTitle: {
+    flexDirection: 'row',
   },
 });
 

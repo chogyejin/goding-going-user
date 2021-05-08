@@ -12,8 +12,11 @@ import EtcScreen, { EtcParams } from '../../screens/EtcScreen';
 import TeacherTip, {
   TeacherTipParams,
 } from '../../screens/EtcScreen/TeacherTip';
+<<<<<<< HEAD
 
 // Home Screen 에서 필요한 스택은 2개 - 메인, 디테일
+=======
+>>>>>>> bb21950de97a7d994bb7c937b6bd3007dcf3de07
 
 // 1. 필요한 스크린에 대해 enum 타입을 정의한다. (리듀서에서 액션타입을 지정해주는 것 처럼)
 export enum HomeScreens {

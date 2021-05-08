@@ -52,7 +52,7 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
 
       if (result.data) {
         const existsPosts = result.data.posts.length > 0;
-        if (isFirstLoad || existsPosts) {
+        if (isFirstLoad && existsPosts) {
           setIsFirstLoad(false);
           console.log(result.data.posts);
           setPosts(result.data.posts || []);

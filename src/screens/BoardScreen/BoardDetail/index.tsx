@@ -48,6 +48,7 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { postID } = params;
+  const [isCompletedLoading, setIsCompletedLoading] = useState<boolean>(false);
   const [post, setPost] = useState<IPost>({
     id: '',
     schoolID: '',
@@ -67,8 +68,9 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
           postID,
         },
       });
-      if (result) {
+      if (result && !isCompletedLoading) {
         console.log('성공');
+        setIsCompletedLoading(true);
         setPost(result.data.post);
       } else {
         console.log('실패');

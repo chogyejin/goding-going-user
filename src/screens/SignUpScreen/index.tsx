@@ -113,6 +113,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
         nickName,
       },
     });
+    //result : 이미 테이블에 있으면 false return받고, 없으면 true return받음
     console.log(result);
     if (result.data) {
       setCheckedNickname(true); //닉네임 중복확인이 되어야 회원가입이 가능하도록

@@ -81,7 +81,7 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
         console.log('성공');
         setIsCompletedLoading(true);
         console.log();
-        setPost(result.data.post.dataValues);
+        setPost(result.data.post);
       } else {
       }
     }
@@ -92,13 +92,25 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
   return (
     <SafeAreaView>
       <Text style={styles.BoardDetailTitle}>게시판 상세</Text>
-      <View style={styles.subTitle}>
-        <Text>제목</Text>
-        <Text>작성시간</Text>
+      <View>
+        <Text>
+          <Text>내용</Text>
+          {post.contents}
+        </Text>
       </View>
-      <View style={styles.subTitle}>
-        <Text>{post.title} 호로로롱</Text>
+      <View>
         <Text>{post.createdAt}</Text>
+      </View>
+      <View>
+        <Text>
+          <Text style={styles.title}>제목: </Text>
+          {post.title}
+        </Text>
+      </View>
+      <View>
+        <Text>
+          <Text>제 옆에 피카츄가 없어요... {post.user.nickName}</Text>
+        </Text>
       </View>
     </SafeAreaView>
   );
@@ -110,6 +122,9 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     flexDirection: 'row',
+  },
+  title: {
+    fontSize: 40,
   },
 });
 

@@ -76,11 +76,8 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
           postID,
         },
       });
-      console.log(result);
       if (result && !isCompletedLoading) {
-        console.log('성공');
         setIsCompletedLoading(true);
-        console.log();
         setPost(result.data.post);
       } else {
       }

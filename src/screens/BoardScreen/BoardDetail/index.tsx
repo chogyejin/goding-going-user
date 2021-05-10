@@ -40,8 +40,8 @@ interface IPost {
   createdAt: string;
   updatedAt: string;
   user: {
-    nickname: string;
-    userId: string;
+    nickName: string;
+    userID: string;
   };
 }
 
@@ -64,8 +64,8 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
     createdAt: '',
     updatedAt: '',
     user: {
-      nickname: '',
-      userId: '',
+      nickName: '',
+      userID: '',
     },
   });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import {
   HomeScreens,
   HomeStackParamList,
@@ -9,11 +9,11 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Dimensions,
-  ShadowPropTypesIOS,
+  TextInput,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type BoardDetailNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -76,6 +76,7 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
           postID,
         },
       });
+      console.log(result);
       if (result && !isCompletedLoading) {
         setIsCompletedLoading(true);
         setPost(result.data.post);
@@ -86,28 +87,61 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
     getPost();
   }, [post]);
 
+  async function isYou(postUserID: string) {
+    const asyncUserID = await AsyncStorage.getItem('userID');
+    console.log(asyncUserID);
+    console.log(postUserID);
+    if (postUserID == asyncUserID) {
+      return false;
+    } else {
+      return false;
+    }
+  }
+
+  const moveMessage = (userID: string) => () => {
+    navigation.navigate(HomeScreens.Message, { userID });
+  };
+
+  const [isVisible, setIsVisible] = useState(false);
+  console.log(isVisible);
+
+  // 본인이 본인 작성 post의 닉네임을 누르면 쪽지보내기 뜨지 않게 하기위해 시도했으나,
+  // isYou의 return이 false여도 &&연산자가 제대로 작동 안해서 일단 뺌
+  // {isYou(post.userID) && isVisible ? (
+  //   <View style={styles.modalBox}>
+  //     <TouchableOpacity onPress={moveMessage(post.userID)}>
+  //       <Text>쪽지보내기</Text>
+  //     </TouchableOpacity>
+  //   </View>
+  // ) : (
+  //   <View />
+  // )}
+
   return (
     <SafeAreaView>
-      <Text style={styles.BoardDetailTitle}>게시판 상세</Text>
-      <View>
-        <Text>
-          <Text>내용</Text>
-          {post.contents}
-        </Text>
+      <View style={styles.subTitle}>
+        <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
+          <Text> {post.user.nickName}</Text>
+        </TouchableOpacity>
+        {isVisible ? (
+          <View style={styles.modalBox}>
+            <TouchableOpacity onPress={moveMessage(post.userID)}>
+              <Text style={styles.modalBoxText}>쪽지보내기</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View />
+        )}
+        <Text> ( {post.createdAt} )</Text>
+      </View>
+      <View style={styles.subTitle}>
+        <Text>{post.title}</Text>
+      </View>
+      <View style={styles.boardBox}>
+        <Text>{post.contents}</Text>
       </View>
       <View>
-        <Text>{post.createdAt}</Text>
-      </View>
-      <View>
-        <Text>
-          <Text style={styles.title}>제목: </Text>
-          {post.title}
-        </Text>
-      </View>
-      <View>
-        <Text>
-          <Text>제 옆에 피카츄가 없어요... {post.user.nickName}</Text>
-        </Text>
+        <TextInput style={styles.replyBox} placeholder="  reply"></TextInput>
       </View>
     </SafeAreaView>
   );
@@ -118,10 +152,39 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   subTitle: {
+    margin: 10,
+    height: 20,
     flexDirection: 'row',
+    backgroundColor: 'white',
   },
-  title: {
-    fontSize: 40,
+  boardBox: {
+    margin: 10,
+    height: 100,
+    backgroundColor: 'white',
+  },
+  replyBox: {
+    margin: 10,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
+  mailbox: {
+    alignItems: 'flex-end',
+    marginRight: 10,
+  },
+  modalBoxText: {
+    color: 'white',
+  },
+  modalBox: {
+    left: 10,
+    top: 20,
+    width: 80,
+    height: 20,
+    borderRadius: 5,
+    backgroundColor: '#1388c2',
+    opacity: 0.8,
+    alignItems: 'center',
+    position: 'absolute',
   },
 });
 

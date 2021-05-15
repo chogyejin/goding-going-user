@@ -30,7 +30,7 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { symbol } = params;
-  
+
   return (
     <SafeAreaView>
       <Text style={styles.EtcTitle}>여기는 기타 기능을 모은 탭</Text>
@@ -39,8 +39,10 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
         onPress={() => navigation.navigate(HomeScreens.TeacherTip, { symbol })}>
         <Text>선생님 팁 게시판 버튼</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.listButton}>
-        <Text>다른 리스트2 버튼</Text>
+      <TouchableOpacity
+        style={styles.listButton}
+        onPress={() => navigation.navigate(HomeScreens.Naesin, { symbol })}>
+        <Text>내신 계산기</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.listButton}>
         <Text>다른 리스트3 버튼</Text>

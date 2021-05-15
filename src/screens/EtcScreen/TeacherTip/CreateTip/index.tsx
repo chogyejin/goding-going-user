@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Picker } from '@react-native-picker/picker';
 import { Button, Input } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type CreateTipNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -42,16 +43,17 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
   const [selectedSubject, setSelectedSubject] = useState<string>();
   const [teacherName, setTeacherName] = useState<string>('');
   const [content, setContent] = useState<string>('');
+  const schoolID = AsyncStorage.getItem('schoolID');
 
   const registerTip = async () => {
     const result = await axios.post('http://localhost:4000/api/createTip', {
       params: {
-        selectedSubject,
-        teacherName,
-        content,
+        name,
+        subject,
+        schoolID,
       },
     });
-    console.log(selectedSubject, teacherName, content);
+
     if (result.data) {
       navigation.navigate(HomeScreens.TeacherTip, { symbol });
     }
@@ -62,7 +64,9 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
       'http://localhost:4000/api/createTeacher',
       {
         params: {
-          name,
+          name: teacherName,
+          subject:selectedSubject,
+          schoolID,
         },
       },
     );
@@ -74,7 +78,7 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
   };
 
   const checkTeacherName = async () => {
-    const result = await axios.get('http://localhost:4000/api/checkTeachers', {
+    const result = await axios.get('http://localhost:4000/api/checkTeacher', {
       params: {
         name,
       },
@@ -110,7 +114,11 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
         </Picker>
       </View>
       <View style={styles.InputText}>
-        <Input value={teacherName} placeholder="선생님 이름 입력" />
+        <Input
+          value={teacherName}
+          placeholder="선생님 이름 입력"
+          onChangeText={(text) => setTeacherName(text)}
+        />
         <Button>
           <Text style={{ color: 'white' }} onPress={checkTeacherName}>
             검색

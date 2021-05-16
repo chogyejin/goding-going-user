@@ -4,12 +4,15 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
+  ScrollView,
 } from 'react-native';
+
+import { Icon } from 'native-base';
+
 import {
   HomeScreens,
   HomeStackParamList,
@@ -17,6 +20,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type MessageScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -24,6 +28,7 @@ type MessageScreenNavigationProps = StackNavigationProp<
 >;
 export type MessageParams = {
   userID: string;
+  newMessageID?: string;
 };
 
 interface MessageScreenProps {
@@ -31,47 +36,112 @@ interface MessageScreenProps {
   navigation: MessageScreenNavigationProps; // 네비게이션 속성에 대한 타입
 }
 interface IMessage {
+  title: string;
+  contents: string;
   sendingUserID: string;
   receivedUserID: string;
-  contents: string;
-  title: string;
 }
 
 const MessageScreen: React.FunctionComponent<MessageScreenProps> = (props) => {
+  //const [sendingUserID, setSendingUserID] = useState<string>('');
+  //const [receivedUserID, setReceivedUserID] = useState<string>('');
+  //const [contents, setContents] = useState<string>('');
+  //const [title, setTitle] = useState<string>('');
+  //나 = asyncstorage의 userID -> sendingUserID
+  //너 = 게시글 쓴 사람(board detail로부터 넘겨받은 userID) -> receivedUserID
+  const [isCompletedLoading, setIsCompletedLoading] = useState<boolean>(false);
+  const [myUserID, setMyUserID] = useState<String>('');
   const { navigation, route } = props;
   const { params } = route;
-  const { userID } = params;
-  console.log(userID);
+  const { userID, newMessageID } = params;
 
-  const [message, setMessage] = useState<IMessage>({
-    sendingUserID: '',
-    receivedUserID: '',
-    contents: '',
-    title: '',
-  });
+  const [newMessageIDState, setNewMessageIDState] = useState('');
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  //  1. messages state를 정의한다.
+  //  2. myUserID를 셋팅한다.
+  //  3. myUserID를 확인해서 css를 셋팅한다
+  if (newMessageID) {
+    setNewMessageIDState(newMessageID);
+  }
 
-  const sendMessage = async () => {
-    const result = await axios.post('http://localhost:4000/api/createMessage', {
-      params: {
-        sendingUserID,
-        receivedUserID,
-        contents,
-        title,
-      },
-    });
+  console.log(newMessageID);
+  useEffect(() => {
+    async function getMessage() {
+      if (!myUserID) {
+        return;
+      }
+      const result = await axios.get('http://localhost:4000/api/messages', {
+        params: {
+          sendingUserID: myUserID,
+          receivedUserID: userID,
+        },
+      });
+
+      if (result && !isCompletedLoading) {
+        setIsCompletedLoading(true);
+        setMessages(result.data.messages);
+      } else {
+      }
+    }
+
+    async function setUser() {
+      const asyncUserID = await AsyncStorage.getItem('userID');
+      if (asyncUserID != null) {
+        setMyUserID(asyncUserID);
+      } else {
+      }
+    }
+    setUser();
+
+    getMessage();
+  }, [myUserID, newMessageIDState]);
+
+  function isSender(userid: string) {
+    //userID == userid : sender가 post작성자(userID)
+    if (userID == userid) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const moveMessageDetail = (userID: string) => () => {
+    navigation.navigate(HomeScreens.MessageDetail, { userID });
   };
+
+  console.log('내 아래는 마이 유저 아이디');
+  console.log(myUserID);
 
   return (
     <View style={styles.container}>
-      <View style={styles.messageBox}>
-        <Text>messages</Text>
-      </View>
-      <View style={styles.sendMessage}>
-        <TextInput placeholder="send message"></TextInput>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>SEND</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={moveMessageDetail(userID)}>
+        <Icon name="paper-plane-outline"></Icon>
+      </TouchableOpacity>
+      <ScrollView style={styles.messageBox}>
+        <View>
+          {messages.map((ele, index) => {
+            if (ele.receivedUserID === myUserID) {
+              return (
+                <View key={index} style={styles.receiverBox}>
+                  <Text style={{ color: 'blue' }}>받은 쪽지</Text>
+                  <Text>{ele.title}</Text>
+                  <Text>{ele.contents}</Text>
+                </View>
+              );
+            } else {
+              return (
+                <View key={index} style={styles.senderBox}>
+                  <Text style={{ color: 'red' }}>보낸 쪽지</Text>
+                  <Text>{ele.title}</Text>
+                  <Text>{ele.contents}</Text>
+                </View>
+              );
+            }
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -83,7 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   messageBox: {
-    height: 500,
+    height: 380,
     margin: 10,
     borderWidth: 1,
     borderColor: '#1388c2',
@@ -91,18 +161,39 @@ const styles = StyleSheet.create({
   sendMessage: {
     right: 0,
     margin: 10,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    flexDirection: 'column',
   },
-  buttonText: {
-    color: 'white',
+  messageTitle: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+  },
+  messageContent: {
+    marginLeft: 10,
+    marginRight: 10,
+    height: 100,
+    flexShrink: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+  },
+  senderBox: {
+    //borderWidth: 1,
+    //marginRight: 20,
+    backgroundColor: '#baf5ff',
+    marginBottom: 5,
+  },
+  receiverBox: {
+    //borderWidth: 1,
+    //marginLeft: 20,
+    backgroundColor: '#ffbaba',
+    marginBottom: 5,
   },
   button: {
-    height: 20,
-    width: 40,
-    borderRadius: 5,
-    alignItems: 'center',
-    backgroundColor: '#1388c2',
+    marginRight: 10,
+    marginTop: 10,
+    alignItems: 'flex-end',
   },
 });
 

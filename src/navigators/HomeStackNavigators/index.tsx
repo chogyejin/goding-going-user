@@ -16,6 +16,10 @@ import TeacherTipDetail, {
   TeacherTipDetailParams,
 } from '../../screens/EtcScreen/TeacherTip/TeacherTipDetail';
 import MessageScreen, { MessageParams } from '../../screens/MessageScreen';
+import MessageDetail, {
+  MessageDetailParams,
+} from '../../screens/MessageScreen/MessageDetail';
+
 // Home Screen 에서 필요한 스택은 2개 - 메인, 디테일
 
 // 1. 필요한 스크린에 대해 enum 타입을 정의한다. (리듀서에서 액션타입을 지정해주는 것 처럼)
@@ -29,6 +33,7 @@ export enum HomeScreens {
   TeacherTip = 'TeacherTip',
   TeacherTipDetail = 'TeacherTipDetail',
   Message = 'Message',
+  MessageDetail = 'MessageDetail',
 }
 
 // 2. 각 스크린 마다 필요한 파라미터 타입 정의
@@ -42,6 +47,7 @@ export type HomeStackParamList = {
   TeacherTip: TeacherTipParams;
   TeacherTipDetail: TeacherTipDetailParams;
   Message: MessageParams;
+  MessageDetail: MessageDetailParams;
 };
 
 // 3. 방금 만든 타입을 createStackNavigator 메소드 앞에 지정해주서 HomeStack 네비게이터 객체를 만들어줌.
@@ -64,6 +70,10 @@ const HomeStackNavigator: React.FunctionComponent = () => {
         component={TeacherTipDetail}
       />
       <HomeStack.Screen name={HomeScreens.Message} component={MessageScreen} />
+      <HomeStack.Screen
+        name={HomeScreens.MessageDetail}
+        component={MessageDetail}
+      />
     </HomeStack.Navigator>
   );
 };

@@ -46,7 +46,7 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
     async function getPost() {
       const result = await axios.get('http://localhost:4000/api/posts', {
         params: {
-          schoolID: 'S010000391',
+          schoolID: '8140087',
         },
       });
 

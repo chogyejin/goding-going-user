@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -47,9 +48,10 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
 
   useEffect(() => {
     async function getTeacher() {
+      const schoolID = await AsyncStorage.getItem('schoolID');
       const result = await axios.get('http://localhost:4000/api/teachers', {
         params: {
-          schoolID: 'S010000391',
+          schoolID,
         },
       });
 

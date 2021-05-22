@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -18,7 +20,9 @@ type TeacherTipNavigationProps = StackNavigationProp<
   HomeScreens.TeacherTip
 >;
 
-export type TeacherTipParams = {};
+export type TeacherTipParams = {
+  symbol: string;
+};
 
 interface TeacherTipProps {
   route: { params: TeacherTipParams };
@@ -34,38 +38,75 @@ interface Teacher {
 //schoolID으로 api(api/teachers) 요청하고 선생님 이름, 과목 가져오기
 
 const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { params } = route;
+  const { symbol } = params;
   const [teachers, setTeachers] = useState<Teacher[]>([]);
 
   const moveTeacher = (teacherID: string) => () => {
     navigation.navigate(HomeScreens.TeacherTipDetail, { teacherID });
   };
 
-  useEffect(() => {
-    async function getTeacher() {
-      const result = await axios.get('http://localhost:4000/api/teachers', {
-        params: {
-          schoolID: 'S010000391',
-        },
-      });
+  // useEffect(() => {
+  //   async function getTeacher() {
+  //     const schoolID = await AsyncStorage.getItem('schoolID');
+  //     const result = await axios.get('http://localhost:4000/api/teachers', {
+  //       params: {
+  //         schoolID,
+  //       },
+  //     });
 
-      if (result.data) {
-        if (teachers.length === 0) {
-          setTeachers(result.data.teachers);
+  //     console.log(result.data.teachers);
+  //     if (result.data) {
+  //       if (teachers.length === 0) {
+  //         setTeachers(result.data.teachers);
+  //       }
+  //     } else {
+  //       console.log('실패');
+  //     }
+  //   }
+
+  //   getTeacher();
+  // }, [teachers]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getTeacher() {
+        const schoolID = await AsyncStorage.getItem('schoolID');
+        const result = await axios.get('http://localhost:4000/api/teachers', {
+          params: {
+            schoolID,
+          },
+        });
+
+        console.log(result.data.teachers);
+        if (result.data) {
+          if (teachers.length === 0) {
+            setTeachers(result.data.teachers);
+          }
+        } else {
+          console.log('실패');
         }
-      } else {
-        console.log('실패');
       }
-    }
-    getTeacher();
-  }, [teachers]);
+      getTeacher();
+    }, []),
+  );
 
   return (
     <SafeAreaView>
       <Text style={styles.TeacherTipTitle}>선생님 팁 게시판 타이틀</Text>
-      <View>
+      <View style={styles.subTitle}>
         <Text>과목명</Text>
+        <Text> </Text>
         <Text>이름</Text>
+      </View>
+      <View style={styles.CreateTipButton}>
+        <Text
+          onPress={() =>
+            navigation.navigate(HomeScreens.CreateTip, { symbol })
+          }>
+          팁 작성
+        </Text>
       </View>
       <View style={styles.container}>
         {teachers.map((teacher) => (
@@ -79,12 +120,22 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
+  subTitle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
+  CreateTipButton: {
+    flexDirection: 'row-reverse',
+  },
+  container: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
   TeacherTipTitle: {
+    marginBottom: 5,
     fontSize: 30,
+    alignItems: 'center',
   },
 });
 

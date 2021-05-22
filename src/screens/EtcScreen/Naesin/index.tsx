@@ -105,51 +105,74 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
           userID,
         },
       });
-
+      console.log(result);
       if (result.data && result.data.naesin) {
         navigation.navigate(HomeScreens.NaesinCalc, { symbol });
       }
     }
+    getNaesin();
   });
 
-  const onChangeScore =
-    (
-      gradeName: 'firstGrade' | 'secondGrade' | 'thirdGrade',
-      semesterName: 'firstSemester' | 'lastSemester',
-      subjectName: string,
-    ) =>
-    (text: string) => {
-      const convertedSubjects = totalScore[gradeName][semesterName].map(
-        (subject) => {
-          return subject.subjectName === subjectName
-            ? { ...subject, score: Number(text) }
-            : { ...subject };
-        },
-      );
+  const onChangeScore = (
+    gradeName: 'firstGrade' | 'secondGrade' | 'thirdGrade',
+    semesterName: 'firstSemester' | 'lastSemester',
+    subjectName: string,
+  ) => (text: string) => {
+    const convertedSubjects = totalScore[gradeName][semesterName].map(
+      (subject) => {
+        return subject.subjectName === subjectName
+          ? { ...subject, score: Number(text) }
+          : { ...subject };
+      },
+    );
 
-      setTotalScore({
-        ...totalScore,
-        [gradeName]: {
-          ...totalScore[gradeName],
-          [semesterName]: convertedSubjects,
-        },
-      });
-    };
+    setTotalScore({
+      ...totalScore,
+      [gradeName]: {
+        ...totalScore[gradeName],
+        [semesterName]: convertedSubjects,
+      },
+    });
+  };
 
   const onCreateNaesin = async () => {
     const userID = await AsyncStorage.getItem('userID');
+    console.log(
+      totalScore.secondGrade.firstSemester.map((ele) => {
+        return { subject: ele.subjectName, score: ele.score };
+      }),
+    );
     const result = await axios.post(
       'http://localhost:4000/api/createNaesin',
       { headers },
       {
         params: {
           userID,
-          grade1FirstSemester: totalScore.firstGrade.firstSemester,
-          grade1LastSemester: totalScore.firstGrade.lastSemester,
-          grade2FirstSemester: totalScore.secondGrade.firstSemester,
-          grade2LastSemester: totalScore.secondGrade.lastSemester,
-          grade3FirstSemester: totalScore.thirdGrade.firstSemester,
-          grade3LastSemester: [],
+          grade1FirstSemester: JSON.stringify(
+            totalScore.firstGrade.firstSemester.map((ele) => {
+              return { subject: ele.subjectName, score: ele.score };
+            }),
+          ),
+          grade1LastSemester: JSON.stringify(
+            totalScore.firstGrade.lastSemester.map((ele) => {
+              return { subject: ele.subjectName, score: ele.score };
+            }),
+          ),
+          grade2FirstSemester: JSON.stringify(
+            totalScore.secondGrade.firstSemester.map((ele) => {
+              return { subject: ele.subjectName, score: ele.score };
+            }),
+          ),
+          grade2LastSemester: JSON.stringify(
+            totalScore.secondGrade.lastSemester.map((ele) => {
+              return { subject: ele.subjectName, score: ele.score };
+            }),
+          ),
+          grade3FirstSemester: JSON.stringify(
+            totalScore.thirdGrade.firstSemester.map((ele) => {
+              return { subject: ele.subjectName, score: ele.score };
+            }),
+          ),
         },
       },
     );
@@ -194,111 +217,106 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
 
         <View style={styles.third}>
           <View style={{ flex: 1 }}>
-            {totalScore.firstGrade.firstSemester.map((subject) => (
-              <>
-                <View>{subject.subjectName}</View>
-              </>
+            {totalScore.firstGrade.firstSemester.map((subject, index) => (
+              <View key={index}>
+                <Text>{subject.subjectName}</Text>
+              </View>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.firstGrade.lastSemester.map((subject) => (
-              <>
-                <View>{subject.subjectName}</View>
-              </>
+            {totalScore.firstGrade.lastSemester.map((subject, index) => (
+              <View key={index}>
+                <Text>{subject.subjectName}</Text>
+              </View>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.secondGrade.firstSemester.map((subject) => (
-              <>
-                <View>{subject.subjectName}</View>
-              </>
+            {totalScore.secondGrade.firstSemester.map((subject, index) => (
+              <View key={index}>
+                <Text>{subject.subjectName}</Text>
+              </View>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.secondGrade.lastSemester.map((subject) => (
-              <>
-                <View>{subject.subjectName}</View>
-              </>
+            {totalScore.secondGrade.lastSemester.map((subject, index) => (
+              <View key={index}>
+                <Text>{subject.subjectName}</Text>
+              </View>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.thirdGrade.firstSemester.map((subject) => (
-              <>
-                <View>{subject.subjectName}</View>
-              </>
+            {totalScore.thirdGrade.firstSemester.map((subject, index) => (
+              <View key={index}>
+                <Text>{subject.subjectName}</Text>
+              </View>
             ))}
           </View>
         </View>
 
         <View style={styles.forth}>
           <View style={{ flex: 1 }}>
-            {totalScore.firstGrade.firstSemester.map((subject) => (
-              <>
-                <TextInput
-                  style={{ fontSize: 16 }}
-                  value={String(subject.score)}
-                  onChangeText={onChangeScore(
-                    'firstGrade',
-                    'firstSemester',
-                    subject.subjectName,
-                  )}></TextInput>
-              </>
+            {totalScore.firstGrade.firstSemester.map((subject, index) => (
+              <TextInput
+                key={index}
+                style={{ fontSize: 16 }}
+                value={String(subject.score)}
+                onChangeText={onChangeScore(
+                  'firstGrade',
+                  'firstSemester',
+                  subject.subjectName,
+                )}></TextInput>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.firstGrade.lastSemester.map((subject) => (
-              <>
-                <TextInput
-                  style={{ fontSize: 16 }}
-                  value={String(subject.score)}
-                  onChangeText={onChangeScore(
-                    'firstGrade',
-                    'lastSemester',
-                    subject.subjectName,
-                  )}></TextInput>
-              </>
+            {totalScore.firstGrade.lastSemester.map((subject, index) => (
+              <TextInput
+                key={index}
+                style={{ fontSize: 16 }}
+                value={String(subject.score)}
+                onChangeText={onChangeScore(
+                  'firstGrade',
+                  'lastSemester',
+                  subject.subjectName,
+                )}></TextInput>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.secondGrade.firstSemester.map((subject) => (
-              <>
-                <TextInput
-                  style={{ fontSize: 16 }}
-                  value={String(subject.score)}
-                  onChangeText={onChangeScore(
-                    'secondGrade',
-                    'firstSemester',
-                    subject.subjectName,
-                  )}></TextInput>
-              </>
+            {totalScore.secondGrade.firstSemester.map((subject, index) => (
+              <TextInput
+                key={index}
+                style={{ fontSize: 16 }}
+                value={String(subject.score)}
+                onChangeText={onChangeScore(
+                  'secondGrade',
+                  'firstSemester',
+                  subject.subjectName,
+                )}></TextInput>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.secondGrade.lastSemester.map((subject) => (
-              <>
-                <TextInput
-                  style={{ fontSize: 16 }}
-                  value={String(subject.score)}
-                  onChangeText={onChangeScore(
-                    'secondGrade',
-                    'lastSemester',
-                    subject.subjectName,
-                  )}></TextInput>
-              </>
+            {totalScore.secondGrade.lastSemester.map((subject, index) => (
+              <TextInput
+                key={index}
+                style={{ fontSize: 16 }}
+                value={String(subject.score)}
+                onChangeText={onChangeScore(
+                  'secondGrade',
+                  'lastSemester',
+                  subject.subjectName,
+                )}></TextInput>
             ))}
           </View>
           <View style={{ flex: 1 }}>
-            {totalScore.thirdGrade.firstSemester.map((subject) => (
-              <>
-                <TextInput
-                  style={{ fontSize: 16 }}
-                  value={String(subject.score)}
-                  onChangeText={onChangeScore(
-                    'thirdGrade',
-                    'firstSemester',
-                    subject.subjectName,
-                  )}></TextInput>
-              </>
+            {totalScore.thirdGrade.firstSemester.map((subject, index) => (
+              <TextInput
+                key={index}
+                style={{ fontSize: 16 }}
+                value={String(subject.score)}
+                onChangeText={onChangeScore(
+                  'thirdGrade',
+                  'firstSemester',
+                  subject.subjectName,
+                )}></TextInput>
             ))}
           </View>
         </View>

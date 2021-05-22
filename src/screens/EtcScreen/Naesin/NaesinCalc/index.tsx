@@ -184,8 +184,21 @@ interface NaesinCalcProps {
 const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { totalScore } = params;
-  //const [totalScore, setTotalScore] = useState<ITotalScore>();
+
+  const [totalScore, setTotalScore] = useState<ITotalScore>({
+    firstGrade: {
+      firstSemester: [],
+      lastSemester: [],
+    },
+    secondGrade: {
+      firstSemester: [],
+      lastSemester: [],
+    },
+    thirdGrade: {
+      firstSemester: [],
+      lastSemester: [],
+    },
+  });
   const [firstGradePercent, setFirstGradePercent] = useState<Number>(0);
   const [secondGradePercent, setSecondGradePercent] = useState<Number>(0);
   const [thirdGradePercent, setThirdGradePercent] = useState<Number>(0);
@@ -198,6 +211,8 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
     let sumOf4 = 0;
     let sumOf5 = 0;
     let result = 0;
+
+    console.log(totalScore);
 
     for (const ele of totalScore.firstGrade.firstSemester) {
       sumOf1 += ele.score;
@@ -223,13 +238,6 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log(typeof totalScore.firstGrade.firstSemester[0].score);
-    console.log(totalScore.firstGrade.firstSemester[0]);
-    console.log(totalScore.thirdGrade.firstSemester[4]);
-    console.log(calculatedNaesin);
-  });
-
-  useEffect(() => {
     async function getNaesin() {
       const userID = await AsyncStorage.getItem('userID');
       const result = await axios.get('http://localhost:4000/api/naesin', {
@@ -238,9 +246,26 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
         },
       });
 
-      if (result.data) {
+      if (
+        result.data &&
+        result.data.naesin &&
+        totalScore.firstGrade.firstSemester.length === 0
+      ) {
         console.log('내신 가져오기 성공');
-        setTotalScore(totalScore);
+        setTotalScore({
+          firstGrade: {
+            firstSemester: result.data.naesin.grade1FirstSemester,
+            lastSemester: result.data.naesin.grade1FirstSemester,
+          },
+          secondGrade: {
+            firstSemester: result.data.naesin.grade1FirstSemester,
+            lastSemester: result.data.naesin.grade1FirstSemester,
+          },
+          thirdGrade: {
+            firstSemester: result.data.naesin.grade1FirstSemester,
+            lastSemester: result.data.naesin.grade1FirstSemester,
+          },
+        });
       } else {
         console.log('내신 가져오기 실패');
       }

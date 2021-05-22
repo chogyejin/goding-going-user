@@ -8,6 +8,9 @@ import BoardScreen, { BoardParams } from '../../screens/BoardScreen';
 import BoardDetail, {
   BoardDetailParams,
 } from '../../screens/BoardScreen/BoardDetail';
+import BoardCreation, {
+  BoardCreationParams,
+} from '../../screens/BoardScreen/BoardCreation';
 import EtcScreen, { EtcParams } from '../../screens/EtcScreen';
 import TeacherTip, {
   TeacherTipParams,
@@ -34,6 +37,7 @@ export enum HomeScreens {
   TeacherTipDetail = 'TeacherTipDetail',
   Message = 'Message',
   MessageDetail = 'MessageDetail',
+  BoardCreation = 'BoardCreation',
 }
 
 // 2. 각 스크린 마다 필요한 파라미터 타입 정의
@@ -43,6 +47,7 @@ export type HomeStackParamList = {
   SignUp: SignUpParams;
   Board: BoardParams;
   BoardDetail: BoardDetailParams;
+  BoardCreation: BoardCreationParams;
   Etc: EtcParams;
   TeacherTip: TeacherTipParams;
   TeacherTipDetail: TeacherTipDetailParams;
@@ -62,6 +67,10 @@ const HomeStackNavigator: React.FunctionComponent = () => {
       <HomeStack.Screen
         name={HomeScreens.BoardDetail}
         component={BoardDetail}
+      />
+      <HomeStack.Screen
+        name={HomeScreens.BoardCreation}
+        component={BoardCreation}
       />
       <HomeStack.Screen name={HomeScreens.Etc} component={EtcScreen} />
       <HomeStack.Screen name={HomeScreens.TeacherTip} component={TeacherTip} />

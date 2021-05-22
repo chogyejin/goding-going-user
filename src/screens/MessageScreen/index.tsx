@@ -21,6 +21,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 type MessageScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -54,47 +55,48 @@ const MessageScreen: React.FunctionComponent<MessageScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { userID, newMessageID } = params;
-
-  const [newMessageIDState, setNewMessageIDState] = useState('');
+  //const [newMessageIDState, setNewMessageIDState] = useState('');
   const [messages, setMessages] = useState<IMessage[]>([]);
-  //  1. messages state를 정의한다.
-  //  2. myUserID를 셋팅한다.
-  //  3. myUserID를 확인해서 css를 셋팅한다
-  if (newMessageID) {
-    setNewMessageIDState(newMessageID);
-  }
+  //const isFocused = useIsFocused();
 
-  console.log(newMessageID);
-  useEffect(() => {
-    async function getMessage() {
-      if (!myUserID) {
-        return;
+  //if (newMessageID) {
+  //  setNewMessageIDState(newMessageID);
+  // }
+
+  // console.log(newMessageID);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getMessage() {
+        if (!myUserID) {
+          return;
+        }
+        const result = await axios.get('http://localhost:4000/api/messages', {
+          params: {
+            sendingUserID: myUserID,
+            receivedUserID: userID,
+          },
+        });
+
+        if (result && !isCompletedLoading) {
+          setIsCompletedLoading(true);
+          setMessages(result.data.messages);
+        } else {
+        }
       }
-      const result = await axios.get('http://localhost:4000/api/messages', {
-        params: {
-          sendingUserID: myUserID,
-          receivedUserID: userID,
-        },
-      });
 
-      if (result && !isCompletedLoading) {
-        setIsCompletedLoading(true);
-        setMessages(result.data.messages);
-      } else {
+      async function setUser() {
+        const asyncUserID = await AsyncStorage.getItem('userID');
+        if (asyncUserID != null) {
+          setMyUserID(asyncUserID);
+        } else {
+        }
       }
-    }
+      setUser();
 
-    async function setUser() {
-      const asyncUserID = await AsyncStorage.getItem('userID');
-      if (asyncUserID != null) {
-        setMyUserID(asyncUserID);
-      } else {
-      }
-    }
-    setUser();
-
-    getMessage();
-  }, [myUserID, newMessageIDState]);
+      getMessage();
+    }, [myUserID]),
+  );
 
   function isSender(userid: string) {
     //userID == userid : sender가 post작성자(userID)

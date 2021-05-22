@@ -76,13 +76,13 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
     getMessage();
     navigation.navigate(HomeScreens.Message, {
       userID,
-      newMessageID: result.data.message.id,
+      // newMessageID: result.data.message.id,
     });
   };
 
   async function getMessage() {
     if (!sendingUserID) {
-      console.log('userID가 없어요');
+      //console.log('userID가 없어요');
       return;
     }
     const result = await axios.get('http://localhost:4000/api/messages', {
@@ -91,7 +91,7 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
         receivedUserID: userID,
       },
     });
-    console.log('result 반환 했어요');
+    // console.log('result 반환 했어요');
 
     if (result && !isCompletedLoading) {
       setIsCompletedLoading(true);

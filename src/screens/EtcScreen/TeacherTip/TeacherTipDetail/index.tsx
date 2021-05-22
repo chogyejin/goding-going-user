@@ -75,7 +75,7 @@ const TeacherTipDetail: React.FunctionComponent<TeacherTipDetailProps> = (
       <View>
         {tips.map((tip) => (
           <Text key={tip.id}>
-            {tip.contents} {tip.title}
+            {tip.title} {tip.contents}
           </Text>
         ))}
       </View>

@@ -15,6 +15,7 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type BoardScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -44,9 +45,10 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
 
   useEffect(() => {
     async function getPost() {
+      const myShcoolID = await AsyncStorage.getItem('schoolID');
       const result = await axios.get('http://localhost:4000/api/posts', {
         params: {
-          schoolID: '8140087',
+          schoolID: myShcoolID,
         },
       });
 

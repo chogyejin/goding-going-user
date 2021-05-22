@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -46,26 +47,50 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
     navigation.navigate(HomeScreens.TeacherTipDetail, { teacherID });
   };
 
-  useEffect(() => {
-    async function getTeacher() {
-      const schoolID = await AsyncStorage.getItem('schoolID');
-      const result = await axios.get('http://localhost:4000/api/teachers', {
-        params: {
-          schoolID,
-        },
-      });
+  // useEffect(() => {
+  //   async function getTeacher() {
+  //     const schoolID = await AsyncStorage.getItem('schoolID');
+  //     const result = await axios.get('http://localhost:4000/api/teachers', {
+  //       params: {
+  //         schoolID,
+  //       },
+  //     });
 
-      console.log(result.data.teachers);
-      if (result.data) {
-        if (teachers.length === 0) {
-          setTeachers(result.data.teachers);
+  //     console.log(result.data.teachers);
+  //     if (result.data) {
+  //       if (teachers.length === 0) {
+  //         setTeachers(result.data.teachers);
+  //       }
+  //     } else {
+  //       console.log('실패');
+  //     }
+  //   }
+
+  //   getTeacher();
+  // }, [teachers]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getTeacher() {
+        const schoolID = await AsyncStorage.getItem('schoolID');
+        const result = await axios.get('http://localhost:4000/api/teachers', {
+          params: {
+            schoolID,
+          },
+        });
+
+        console.log(result.data.teachers);
+        if (result.data) {
+          if (teachers.length === 0) {
+            setTeachers(result.data.teachers);
+          }
+        } else {
+          console.log('실패');
         }
-      } else {
-        console.log('실패');
       }
-    }
-    getTeacher();
-  }, [teachers]);
+      getTeacher();
+    }, []),
+  );
 
   return (
     <SafeAreaView>

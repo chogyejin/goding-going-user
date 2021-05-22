@@ -106,8 +106,10 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.txtSignupScreenContainer}>
         <Text style={styles.txtSignupScreen}>
-          {schoolFoods.map((schoolFood) => (
-            <Text style={styles.foodContainer}>{schoolFood.DDISH_NM}</Text>
+          {schoolFoods.map((schoolFood, index) => (
+            <Text key={index} style={styles.foodContainer}>
+              {schoolFood.DDISH_NM}
+            </Text>
           ))}
         </Text>
         <Text style={styles.txtSymbol}>{symbol}</Text>

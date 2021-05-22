@@ -271,7 +271,7 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
       <View style={styles.calcButton}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate(HomeScreens.NaesinCalc, { symbol })
+            navigation.navigate(HomeScreens.NaesinCalc, { totalScore })
           }>
           <Text>계산</Text>
         </TouchableOpacity>

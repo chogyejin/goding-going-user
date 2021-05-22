@@ -11,8 +11,41 @@ type NaesinCalcNavigationProps = StackNavigationProp<
   HomeScreens.NaesinCalc
 >;
 
+interface ITotalScore {
+  firstGrade: {
+    firstSemester: Array<{
+      subjectName: string;
+      score: number;
+    }>;
+    lastSemester: Array<{
+      subjectName: string;
+      score: number;
+    }>;
+  };
+  secondGrade: {
+    firstSemester: Array<{
+      subjectName: string;
+      score: number;
+    }>;
+    lastSemester: Array<{
+      subjectName: string;
+      score: number;
+    }>;
+  };
+  thirdGrade: {
+    firstSemester: Array<{
+      subjectName: string;
+      score: number;
+    }>;
+    lastSemester: Array<{
+      subjectName: string;
+      score: number;
+    }>;
+  };
+}
+
 export type NaesinCalcParams = {
-  symbol: string;
+  totalScore: ITotalScore;
 };
 
 interface NaesinCalcProps {
@@ -143,11 +176,13 @@ const STUDEND1 = {
 const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
+  const { totalScore } = params;
   const [firstGradePercent, setFirstGradePercent] = useState<Number>(0);
   const [secondGradePercent, setSecondGradePercent] = useState<Number>(0);
   const [thirdGradePercent, setThirdGradePercent] = useState<Number>(0);
 
   useEffect(() => {
+    console.log(totalScore);
     console.log(STUDEND1.firstGrade.firstSemester[0].score);
     console.log(STUDEND1.firstGrade.firstSemester.length);
   });

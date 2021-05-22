@@ -118,48 +118,84 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
   // )}
 
   return (
-    <SafeAreaView>
-      <View style={styles.subTitle}>
-        <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
-          <Text> {post.user.nickName}</Text>
-        </TouchableOpacity>
-        {isVisible ? (
-          <View style={styles.modalBox}>
-            <TouchableOpacity onPress={moveMessage(post.userID)}>
-              <Text style={styles.modalBoxText}>쪽지보내기</Text>
-            </TouchableOpacity>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#dae7ed' }}>
+      <View style={styles.container}>
+        <View style={styles.nicknameBox}>
+          <Text
+            style={{ marginTop: 10, marginLeft: 10 }}
+            onPress={() => setIsVisible(!isVisible)}>
+            {post.user.nickName}
+          </Text>
+
+          {isVisible ? (
+            <View style={styles.modalBox}>
+              <TouchableOpacity onPress={moveMessage(post.userID)}>
+                <Text style={styles.modalBoxText}>쪽지보내기</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View />
+          )}
+
+          <Text
+            style={{
+              fontSize: 13,
+              alignSelf: 'flex-end',
+              marginRight: 10,
+            }}>
+            ( {post.createdAt} )
+          </Text>
+        </View>
+        <View style={styles.content}>
+          <View style={styles.titleBox}>
+            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+              {post.title}
+            </Text>
           </View>
-        ) : (
-          <View />
-        )}
-        <Text> ( {post.createdAt} )</Text>
-      </View>
-      <View style={styles.subTitle}>
-        <Text>{post.title}</Text>
-      </View>
-      <View style={styles.boardBox}>
-        <Text>{post.contents}</Text>
-      </View>
-      <View>
-        <TextInput style={styles.replyBox} placeholder="  reply"></TextInput>
+          <View style={styles.boardBox}>
+            <Text>{post.contents}</Text>
+          </View>
+        </View>
+        <View>
+          <TextInput style={styles.replyBox} placeholder="  reply"></TextInput>
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  BoardDetailTitle: {
-    fontSize: 30,
-  },
-  subTitle: {
+  container: {
+    flex: 1,
     margin: 10,
-    height: 20,
+
+    //backgroundColor: 'white',
+  },
+  nicknameBox: {
+    marginBottom: 10,
+    height: 50,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+  },
+  content: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  titleBox: {
+    margin: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderColor: '#b5bfc4',
     flexDirection: 'row',
     backgroundColor: 'white',
   },
   boardBox: {
     margin: 10,
-    height: 100,
+    paddingTop: 20,
+    paddingBottom: 20,
+    //borderBottomWidth: 1,
+    //borderColor: '#1388c2',
     backgroundColor: 'white',
   },
   replyBox: {
@@ -168,21 +204,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'white',
   },
-  mailbox: {
-    alignItems: 'flex-end',
-    marginRight: 10,
-  },
   modalBoxText: {
-    color: 'white',
+    color: '#1388c2',
+    fontSize: 12,
   },
   modalBox: {
     left: 10,
-    top: 20,
+    top: 30,
     width: 80,
     height: 20,
-    borderRadius: 5,
-    backgroundColor: '#1388c2',
-    opacity: 0.8,
     alignItems: 'center',
     position: 'absolute',
   },

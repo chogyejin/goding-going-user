@@ -93,33 +93,41 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
   );
 
   return (
-    <SafeAreaView>
-      <Text style={styles.TeacherTipTitle}>선생님 팁 게시판 타이틀</Text>
-      <View style={styles.subTitle}>
-        <Text>과목명</Text>
-        <Text> </Text>
-        <Text>이름</Text>
-      </View>
-      <View style={styles.CreateTipButton}>
-        <Text
-          onPress={() =>
-            navigation.navigate(HomeScreens.CreateTip, { symbol })
-          }>
-          팁 작성
-        </Text>
-      </View>
+    <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
       <View style={styles.container}>
-        {teachers.map((teacher) => (
-          <Text onPress={moveTeacher(teacher.id)} key={teacher.id}>
-            {teacher.subject} {teacher.name}
+        <View style={styles.subTitle}>
+          <Text>[과목명]</Text>
+          <Text> </Text>
+          <Text>이름</Text>
+        </View>
+        <View style={styles.CreateTipButton}>
+          <Text
+            onPress={() =>
+              navigation.navigate(HomeScreens.CreateTip, { symbol })
+            }
+            style={{ padding: 10 }}>
+            팁 작성
           </Text>
-        ))}
+        </View>
+        <View style={styles.tipStyle}>
+          {teachers.map((teacher) => (
+            <Text onPress={moveTeacher(teacher.id)} key={teacher.id}>
+              [{teacher.subject}] {teacher.name}
+            </Text>
+          ))}
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
+  },
   subTitle: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -128,14 +136,12 @@ const styles = StyleSheet.create({
   CreateTipButton: {
     flexDirection: 'row-reverse',
   },
-  container: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  TeacherTipTitle: {
-    marginBottom: 5,
-    fontSize: 30,
-    alignItems: 'center',
+  tipStyle: {
+    height: 50,
+    padding: 10,
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#dae7ed',
   },
 });
 

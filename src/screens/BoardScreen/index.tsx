@@ -72,18 +72,17 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   }, [posts]);
 
   return (
-    <SafeAreaView>
-      <Text style={styles.ScreenTitle}>학교 게시판 테스트</Text>
-      <View>
-        <Button onPress={onMoveCreationPage}>
-          <Text>게시글 작성</Text>
-        </Button>
-      </View>
+    <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
       <View style={styles.container}>
         {posts.map((post) => (
-          <Text onPress={movePost(post.id)} key={post.id}>
-            {post.title}
-          </Text>
+          <TouchableOpacity style={styles.postStyle}>
+            <Text
+              onPress={movePost(post.id)}
+              key={post.id}
+              style={{ marginLeft: 10 }}>
+              {post.title}
+            </Text>
+          </TouchableOpacity>
         ))}
       </View>
     </SafeAreaView>
@@ -92,23 +91,29 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    margin: 10,
+    borderRadius: 5,
     backgroundColor: 'white',
-    alignItems: 'center',
+    //alignItems: 'center',
   },
-  ScreenTitle: {
-    alignSelf: 'center',
-    fontSize: 30,
+  postStyle: {
+    height: 100,
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#dae7ed',
+    //backgroundColor: 'white',
+    // alignItems: 'center',
   },
-  BoardTitle: {
-    marginTop: 20,
-    marginBottom: 10,
-    color: 'white',
-    flexDirection: 'column',
-    fontSize: 20,
-    backgroundColor: 'grey',
-    borderRadius: 10,
-    padding: 10,
-  },
+  // BoardTitle: {
+  //   marginTop: 20,
+  //   marginBottom: 10,
+  //   color: 'white',
+  //   flexDirection: 'column',
+  //   fontSize: 20,
+  //   backgroundColor: 'grey',
+  //   borderRadius: 10,
+  //   padding: 10,
+  // },
 });
 
 export default BoardScreen;

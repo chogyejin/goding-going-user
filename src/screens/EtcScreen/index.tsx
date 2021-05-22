@@ -30,40 +30,48 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { symbol } = params;
-  
+
   return (
-    <SafeAreaView>
-      <Text style={styles.EtcTitle}>여기는 기타 기능을 모은 탭</Text>
-      <TouchableOpacity
-        style={styles.listButton}
-        onPress={() => navigation.navigate(HomeScreens.TeacherTip, { symbol })}>
-        <Text>선생님 팁 게시판 버튼</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.listButton}>
-        <Text>다른 리스트2 버튼</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.listButton}>
-        <Text>다른 리스트3 버튼</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <Text>게시판 바로 가기</Text>
+
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() => navigation.navigate(HomeScreens.Board, { symbol })}>
+            <Text> - 자유게시판 </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() =>
+              navigation.navigate(HomeScreens.TeacherTip, { symbol })
+            }>
+            <Text> - 선생님 팁 게시판 버튼</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.list}>
+            <Text> - 무슨 무슨 게시판 </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  EtcTitle: {
-    fontSize: 30,
+  container: {
+    flex: 1,
+    margin: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
   },
-  listButton: {
-    marginTop: 16,
-    paddingVertical: 8,
-    borderWidth: 4,
-    borderColor: '#20232a',
-    borderRadius: 6,
-    backgroundColor: '#61dafb',
-    color: '#20232a',
-    textAlign: 'center',
-    fontSize: 30,
-    fontWeight: 'bold',
+  buttonContainer: {
+    margin: 10,
+  },
+  list: {
+    margin: 10,
   },
 });
 

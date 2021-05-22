@@ -148,11 +148,12 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
           onChangeText={(text) => setTitle(text)}
         />
       </View>
-      <View style={styles.InputText}>
+      <View style={styles.InputTextContent}>
         <Input
           value={contents}
           placeholder="내용 작성"
           onChangeText={(text) => setContents(text)}
+          multiline={true}
         />
       </View>
       <View style={{ alignItems: 'center', marginTop: 10 }}>
@@ -171,6 +172,13 @@ const styles = StyleSheet.create({
   InputText: {
     marginTop: 5,
     marginBottom: 5,
+    backgroundColor: 'white',
+    borderWidth: 1,
+  },
+  InputTextContent: {
+    marginTop: 5,
+    marginBottom: 5,
+    height: 300,
     backgroundColor: 'white',
     borderWidth: 1,
   },

@@ -16,6 +16,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-community/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type MessageDetailNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -115,42 +116,50 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.sendMessage}>
-        <TextInput
-          style={styles.messageTitle}
-          placeholder="title"
-          returnKeyType="next"
-          value={title}
-          onChangeText={(text: string) => setTitle(text)}></TextInput>
-        <TextInput
-          style={styles.messageContent}
-          placeholder="message"
-          multiline={true}
-          returnKeyType="next"
-          value={contents}
-          onChangeText={(text: string) => setContents(text)}></TextInput>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentBox}>
+        <View style={styles.content}>
+          <TextInput
+            style={styles.messageTitle}
+            placeholder="title"
+            returnKeyType="next"
+            value={title}
+            onChangeText={(text: string) => setTitle(text)}></TextInput>
+          <TextInput
+            style={styles.messageContent}
+            placeholder="message"
+            multiline={true}
+            returnKeyType="next"
+            value={contents}
+            onChangeText={(text: string) => setContents(text)}></TextInput>
+        </View>
+        <View style={{ alignItems: 'flex-end', marginRight: 10 }}>
+          <TouchableOpacity style={styles.button} onPress={sendMessage}>
+            <Text style={styles.buttonText}>SEND</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={{ alignItems: 'flex-end', marginRight: 10 }}>
-        <TouchableOpacity style={styles.button} onPress={sendMessage}>
-          <Text style={styles.buttonText}>SEND</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    // backgroundColor: '#dae7ed',
     backgroundColor: 'white',
   },
-  sendMessage: {
-    right: 0,
+  contentBox: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    padding: 10,
     marginTop: 50,
     flexDirection: 'column',
+    backgroundColor: 'white',
   },
+
   messageTitle: {
     marginLeft: 10,
     marginRight: 10,
@@ -173,6 +182,7 @@ const styles = StyleSheet.create({
   button: {
     height: 20,
     width: 40,
+    marginBottom: 10,
     borderRadius: 5,
     alignItems: 'center',
     backgroundColor: '#1388c2',

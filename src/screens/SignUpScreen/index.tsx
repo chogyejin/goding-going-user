@@ -251,9 +251,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
             <TouchableOpacity
               onPress={signUpAccount}
               disabled={disabled}
-              style={disabled ? styles.disabled : styles.buttonContainer}
-              //onPress={() => navigation.navigate(HomeScreens.SignUp, { symbol })}
-            >
+              style={disabled ? styles.disabled : styles.buttonContainer}>
               <Text style={styles.buttonText}>회원가입 완료</Text>
             </TouchableOpacity>
           </View>

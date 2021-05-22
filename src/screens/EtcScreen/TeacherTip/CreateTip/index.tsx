@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Picker } from '@react-native-picker/picker';
 import { Button, Input } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type CreateTipNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -41,31 +42,28 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
   const [tips, setTips] = useState<ITip[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string>();
   const [teacherName, setTeacherName] = useState<string>('');
-<<<<<<< Updated upstream
-  const [content, setContent] = useState<string>('');
-=======
   const [contents, setContents] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [teacherID, setTeacherID] = useState<string>('');
->>>>>>> Stashed changes
+
+  const headers = {
+    'Content-Type': 'application/json',
+  };
 
   const registerTip = async () => {
     const schoolID = await AsyncStorage.getItem('schoolID');
-    const result = await axios.post('http://localhost:4000/api/createTip', {
-      params: {
-<<<<<<< Updated upstream
-        selectedSubject,
-        teacherName,
-        content,
-=======
-        teacherID,
-        schoolID,
-        title,
-        contents,
->>>>>>> Stashed changes
+    const result = await axios.post(
+      'http://localhost:4000/api/createTip',
+      { headers },
+      {
+        params: {
+          teacherID,
+          schoolID,
+          title,
+          contents,
+        },
       },
-    });
-    console.log(selectedSubject, teacherName, content);
+    );
     if (result.data) {
       navigation.navigate(HomeScreens.TeacherTip, { symbol });
     }
@@ -75,15 +73,12 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
     const schoolID = await AsyncStorage.getItem('schoolID');
     const result2 = await axios.post(
       'http://localhost:4000/api/createTeacher',
+      { headers },
       {
         params: {
-<<<<<<< Updated upstream
-          name,
-=======
           name: teacherName,
           subject: selectedSubject,
           schoolID,
->>>>>>> Stashed changes
         },
       },
     );
@@ -95,16 +90,9 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
     }
   };
 
-<<<<<<< Updated upstream
-  const checkTeacherName = async () => {
-    const result = await axios.get('http://localhost:4000/api/checkTeachers', {
-=======
   const getTeacherName = async () => {
     const schoolID = await AsyncStorage.getItem('schoolID');
-
-    console.log(teacherName);
     const result = await axios.get('http://localhost:4000/api/teachers', {
->>>>>>> Stashed changes
       params: {
         schoolID,
         name: teacherName,
@@ -116,6 +104,7 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
       console.log('선생님 확인');
       alert('선생님 이름 사용');
       setTeacherName(teacherName);
+      setTeacherID(result.data.teachers[0].id);
     } else {
       console.log('선생님 확인x, 선생님 추가');
       confirm('찾는 선생님 없습니다. 만드시겠습니까?');
@@ -135,13 +124,17 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
             setSelectedSubject(itemValue)
           }>
           <Picker.Item label="과목을 선택하세요" value="null" />
-          <Picker.Item label="국어" value="korean" />
-          <Picker.Item label="영어" value="english" />
-          <Picker.Item label="수학" value="math" />
+          <Picker.Item label="국어" value="국어" />
+          <Picker.Item label="영어" value="영어" />
+          <Picker.Item label="수학" value="수학" />
         </Picker>
       </View>
       <View style={styles.InputText}>
-        <Input value={teacherName} placeholder="선생님 이름 입력" />
+        <Input
+          value={teacherName}
+          placeholder="선생님 이름 입력"
+          onChangeText={(text) => setTeacherName(text)}
+        />
         <Button>
           <Text style={{ color: 'white' }} onPress={getTeacherName}>
             검색

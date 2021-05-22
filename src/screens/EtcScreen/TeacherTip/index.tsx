@@ -55,6 +55,7 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
         },
       });
 
+      console.log(result.data.teachers);
       if (result.data) {
         if (teachers.length === 0) {
           setTeachers(result.data.teachers);

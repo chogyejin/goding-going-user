@@ -53,7 +53,7 @@ interface ITotalScore {
 }
 
 export type NaesinCalcParams = {
-  totalScore: ITotalScore;
+  symbol: string;
 };
 
 interface NaesinCalcProps {
@@ -228,24 +228,25 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
     console.log(totalScore.thirdGrade.firstSemester[4]);
     console.log(calculatedNaesin);
   });
-  // useEffect(() => {
-  //   async function getNaesin() {
-  //     const userID = await AsyncStorage.getItem('userID');
-  //     const result = await axios.get('http://localhost:4000/api/naesin', {
-  //       params: {
-  //         userID,
-  //       },
-  //     });
 
-  //     if (result.data) {
-  //       console.log('내신 가져오기 성공');
-  //       setTotalScore(totalScore);
-  //     } else {
-  //       console.log('내신 가져오기 실패');
-  //     }
-  //   }
-  //   getNaesin();
-  // });
+  useEffect(() => {
+    async function getNaesin() {
+      const userID = await AsyncStorage.getItem('userID');
+      const result = await axios.get('http://localhost:4000/api/naesin', {
+        params: {
+          userID,
+        },
+      });
+
+      if (result.data) {
+        console.log('내신 가져오기 성공');
+        setTotalScore(totalScore);
+      } else {
+        console.log('내신 가져오기 실패');
+      }
+    }
+    getNaesin();
+  });
 
   return (
     <View style={styles.container}>

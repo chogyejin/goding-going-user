@@ -93,21 +93,24 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
     },
   });
 
-  // useEffect(() => {
-  //   async function getNaesin() {
-  //     const userID = await AsyncStorage.getItem('userID');
-  //     const result = await axios.get('http://localhost:4000/api/naesin', {
-  //       params: {
-  //         userID,
-  //       },
-  //     });
+  const headers = {
+    'Content-Type': 'application/json',
+  };
 
-  //     if (result.data) {
-  //       navigation.navigate(HomeScreens.NaesinCalc, { symbol });
-  //     }
-  //   }
-  //   getNaesin();
-  // });
+  useEffect(() => {
+    async function getNaesin() {
+      const userID = await AsyncStorage.getItem('userID');
+      const result = await axios.get('http://localhost:4000/api/naesin', {
+        params: {
+          userID,
+        },
+      });
+
+      if (result.data && result.data.naesin) {
+        navigation.navigate(HomeScreens.NaesinCalc, { symbol });
+      }
+    }
+  });
 
   const onChangeScore =
     (
@@ -132,6 +135,29 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
         },
       });
     };
+
+  const onCreateNaesin = async () => {
+    const userID = await AsyncStorage.getItem('userID');
+    const result = await axios.post(
+      'http://localhost:4000/api/createNaesin',
+      { headers },
+      {
+        params: {
+          userID,
+          grade1FirstSemester: totalScore.firstGrade.firstSemester,
+          grade1LastSemester: totalScore.firstGrade.lastSemester,
+          grade2FirstSemester: totalScore.secondGrade.firstSemester,
+          grade2LastSemester: totalScore.secondGrade.lastSemester,
+          grade3FirstSemester: totalScore.thirdGrade.firstSemester,
+          grade3LastSemester: [],
+        },
+      },
+    );
+
+    if (result.data) {
+      navigation.navigate(HomeScreens.NaesinCalc, { symbol });
+    }
+  };
 
   return (
     <>
@@ -278,11 +304,8 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
         </View>
       </View>
       <View style={styles.calcButton}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(HomeScreens.NaesinCalc, { totalScore })
-          }>
-          <Text>계산</Text>
+        <TouchableOpacity onPress={onCreateNaesin}>
+          <Text>비율 계산 페이지로 이동</Text>
         </TouchableOpacity>
       </View>
     </>

@@ -7,6 +7,8 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 type NaesinNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -91,14 +93,21 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
     },
   });
 
-  //확인 console.log
-  useEffect(() => {
-    console.log(totalScore.firstGrade.firstSemester);
-    console.log(totalScore.firstGrade.lastSemester);
-    console.log(totalScore.secondGrade.firstSemester);
-    console.log(totalScore.secondGrade.lastSemester);
-    console.log(totalScore.thirdGrade.firstSemester);
-  });
+  // useEffect(() => {
+  //   async function getNaesin() {
+  //     const userID = await AsyncStorage.getItem('userID');
+  //     const result = await axios.get('http://localhost:4000/api/naesin', {
+  //       params: {
+  //         userID,
+  //       },
+  //     });
+
+  //     if (result.data) {
+  //       navigation.navigate(HomeScreens.NaesinCalc, { symbol });
+  //     }
+  //   }
+  //   getNaesin();
+  // });
 
   const onChangeScore =
     (

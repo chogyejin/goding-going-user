@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Dimensions } from 'react-native';
 import {
   Container,
@@ -14,6 +14,8 @@ import {
 } from '../../navigators/HomeStackNavigators';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationActions } from 'react-navigation';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 type DetailsScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -41,6 +43,10 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
+  foodContainer: {
+    display: 'block',
+    marginBottom: 50,
+  },
   txtSignupScreen: {
     fontSize: 30,
   },
@@ -62,10 +68,48 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { symbol } = params;
+  const [schoolFoods, setSchoolFoods] = useState([]);
+  const [schoolID, setSchoolID] = useState<string>('');
+
+  useEffect(() => {
+    async function getMySchoolID() {
+      if (schoolID) {
+        return;
+      }
+
+      const asyncSchoolID = await AsyncStorage.getItem('schoolID');
+      if (!asyncSchoolID) {
+        return;
+      }
+      setSchoolID(asyncSchoolID);
+    }
+
+    getMySchoolID();
+  });
+
+  useEffect(() => {
+    async function getSchoolFoods() {
+      const result = await axios.get('http://localhost:4000/api/schoolFoods', {
+        params: {
+          date: new Date().toISOString(),
+          schoolID,
+        },
+      });
+      if (result) {
+        setSchoolFoods(result.data.schoolFoods);
+      }
+    }
+    getSchoolFoods();
+  }, [schoolID]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.txtSignupScreenContainer}>
-        <Text style={styles.txtSignupScreen}>DetjhjhjhjjhailsScreen</Text>
+        <Text style={styles.txtSignupScreen}>
+          {schoolFoods.map((schoolFood) => (
+            <Text style={styles.foodContainer}>{schoolFood.DDISH_NM}</Text>
+          ))}
+        </Text>
         <Text style={styles.txtSymbol}>{symbol}</Text>
       </View>
       <View>

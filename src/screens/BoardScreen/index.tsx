@@ -16,6 +16,7 @@ import {
 } from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Button } from 'native-base';
 
 type BoardScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -41,6 +42,10 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
 
   const movePost = (postID: string) => () => {
     navigation.navigate(HomeScreens.BoardDetail, { postID });
+  };
+
+  const onMoveCreationPage = () => {
+    navigation.navigate(HomeScreens.BoardCreation);
   };
 
   useEffect(() => {
@@ -69,6 +74,11 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   return (
     <SafeAreaView>
       <Text style={styles.ScreenTitle}>학교 게시판 테스트</Text>
+      <View>
+        <Button onPress={onMoveCreationPage}>
+          <Text>게시글 작성</Text>
+        </Button>
+      </View>
       <View style={styles.container}>
         {posts.map((post) => (
           <Text onPress={movePost(post.id)} key={post.id}>

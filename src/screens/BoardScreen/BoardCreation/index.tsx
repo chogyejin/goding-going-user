@@ -17,7 +17,7 @@ import { useRef } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { RichEditor } from 'react-native-pell-rich-editor';
+//import { RichEditor } from 'react-native-pell-rich-editor';
 
 type BoardCreationNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -55,6 +55,11 @@ const BoardCreation: React.FunctionComponent<BoardCreationProps> = (props) => {
     hits: 0,
     recommendUserIDs: '',
   });
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(!(post.title && post.contents));
+  }, [post.contents, post.title]);
 
   useEffect(() => {
     async function getMyUserIDAndSchoolID() {
@@ -101,13 +106,12 @@ const BoardCreation: React.FunctionComponent<BoardCreationProps> = (props) => {
   console.log(post.title);
 
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
+      <View style={styles.container}>
         <View>
-          <InputGroup stackedLabel>
+          <InputGroup stackedLabel style={{}}>
             <Label>제목</Label>
             <Input
-              style={styles.title}
               value={post.title}
               onChangeText={(text: string) =>
                 setPost({
@@ -118,70 +122,57 @@ const BoardCreation: React.FunctionComponent<BoardCreationProps> = (props) => {
             />
           </InputGroup>
         </View>
+        <View style={{ flex: 1 }}>
+          <Label> 내용</Label>
+          <Textarea
+            style={{ height: 400 }}
+            rowSpan={5}
+            value={post.contents}
+            onChangeText={(text: string) =>
+              setPost({
+                ...post,
+                contents: text,
+              })
+            }
+          />
+        </View>
       </View>
-      <View>
-        <Label>내용</Label>
-        <Textarea
-          style={styles.title}
-          rowSpan={5}
-          value={post.contents}
-          onChangeText={(text: string) =>
-            setPost({
-              ...post,
-              contents: text,
-            })
-          }
-        />
+      <View style={{ alignItems: 'flex-end', margin: 10 }}>
+        <TouchableOpacity
+          onPress={onCreationPost}
+          disabled={disabled}
+          style={disabled ? styles.disabled : styles.buttonContainer}>
+          <Text>작성 완료</Text>
+        </TouchableOpacity>
       </View>
-
-      <Button onPress={onCreationPost}>
-        <Text>작성완료</Text>
-      </Button>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  BoardCreationTitle: {
-    fontSize: 30,
-  },
-  title: {
-    backgroundColor: 'white',
-  },
-  subTitle: {
+  container: {
+    flex: 1,
     margin: 10,
-    height: 20,
-    flexDirection: 'row',
     backgroundColor: 'white',
   },
-  boardBox: {
-    margin: 10,
-    height: 100,
-    backgroundColor: 'white',
-  },
-  replyBox: {
-    margin: 10,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: 'white',
-  },
-  mailbox: {
-    alignItems: 'flex-end',
-    marginRight: 10,
-  },
-  modalBoxText: {
-    color: 'white',
-  },
-  modalBox: {
-    left: 10,
-    top: 20,
-    width: 80,
-    height: 20,
-    borderRadius: 5,
-    backgroundColor: '#1388c2',
-    opacity: 0.8,
+
+  buttonContainer: {
+    width: 100,
+    height: 40,
     alignItems: 'center',
-    position: 'absolute',
+    justifyContent: 'center',
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: '#1388c2',
+  },
+  disabled: {
+    width: 100,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: '#596c75',
   },
 });
 

@@ -96,9 +96,7 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
     <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.subTitle}>
-          <Text>[과목명]</Text>
-          <Text> </Text>
-          <Text>이름</Text>
+          <Text> 선생님 꿀팁 </Text>
         </View>
         <View style={styles.CreateTipButton}>
           <Text
@@ -109,11 +107,13 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
             팁 작성
           </Text>
         </View>
-        <View style={styles.tipStyle}>
+        <View>
           {teachers.map((teacher) => (
-            <Text onPress={moveTeacher(teacher.id)} key={teacher.id}>
-              [{teacher.subject}] {teacher.name}
-            </Text>
+            <View style={styles.tipStyle}>
+              <Text onPress={moveTeacher(teacher.id)} key={teacher.id}>
+                [{teacher.subject}] {teacher.name}
+              </Text>
+            </View>
           ))}
         </View>
       </View>
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   subTitle: {
+    margin: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

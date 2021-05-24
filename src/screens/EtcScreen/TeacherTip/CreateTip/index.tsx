@@ -45,10 +45,13 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
   const [contents, setContents] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [teacherID, setTeacherID] = useState<string>('');
-
+  const [disabled, setDisabled] = useState(true);
   const headers = {
     'Content-Type': 'application/json',
   };
+  useEffect(() => {
+    setDisabled(!(teacherID && title && contents && selectedSubject));
+  }, [teacherID, title, contents, selectedSubject]);
 
   const registerTip = async () => {
     const schoolID = await AsyncStorage.getItem('schoolID');
@@ -114,11 +117,9 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.CreateTipTitle}>여기는 팁 작성 페이지</Text>
-      </View>
-      <View>
+      <View style={styles.contents}>
         <Picker
+          style={{ margin: 10, height: 20, borderWidth: 0 }}
           selectedValue={selectedSubject}
           onValueChange={(itemValue, itemIndex) =>
             setSelectedSubject(itemValue)
@@ -128,37 +129,42 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
           <Picker.Item label="영어" value="영어" />
           <Picker.Item label="수학" value="수학" />
         </Picker>
-      </View>
-      <View style={styles.InputText}>
-        <Input
-          value={teacherName}
-          placeholder="선생님 이름 입력"
-          onChangeText={(text) => setTeacherName(text)}
-        />
-        <Button>
-          <Text style={{ color: 'white' }} onPress={getTeacherName}>
-            검색
-          </Text>
-        </Button>
-      </View>
-      <View style={styles.InputText}>
-        <Input
-          value={title}
-          placeholder="팁 제목"
-          onChangeText={(text) => setTitle(text)}
-        />
-      </View>
-      <View style={styles.InputTextContent}>
-        <Input
-          value={contents}
-          placeholder="내용 작성"
-          onChangeText={(text) => setContents(text)}
-          multiline={true}
-        />
+
+        <View style={styles.InputTeacher}>
+          <Input
+            style={{ width: 100, flexDirection: 'row' }}
+            value={teacherName}
+            placeholder="선생님 이름 입력"
+            onChangeText={(text) => setTeacherName(text)}
+          />
+          <TouchableOpacity style={styles.serchButton}>
+            <Text style={{ color: 'white' }} onPress={getTeacherName}>
+              검색
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.InputTitle}>
+          <Input
+            value={title}
+            placeholder="팁 제목"
+            onChangeText={(text) => setTitle(text)}
+          />
+        </View>
+        <View style={styles.InputTextContent}>
+          <Input
+            value={contents}
+            placeholder="내용 작성"
+            onChangeText={(text) => setContents(text)}
+            multiline={true}
+          />
+        </View>
       </View>
       <View style={{ alignItems: 'center', marginTop: 10 }}>
-        <TouchableOpacity onPress={registerTip}>
-          <Text style={{ color: 'black' }}>등록</Text>
+        <TouchableOpacity
+          onPress={registerTip}
+          disabled={disabled}
+          style={disabled ? styles.disabled : styles.buttonContainer}>
+          <Text style={{ color: 'white' }}>등록</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -168,26 +174,59 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#dae7ed',
   },
-  InputText: {
-    marginTop: 5,
-    marginBottom: 5,
+  contents: {
+    margin: 10,
     backgroundColor: 'white',
-    borderWidth: 1,
+  },
+  InputTeacher: {
+    margin: 10,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#dae7ed',
+  },
+  serchButton: {
+    flex: 1,
+    borderRadius: 5,
+    backgroundColor: '#1388c2',
+    flexDirection: 'row',
+    width: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  InputTitle: {
+    margin: 10,
+    paddingBottom: 10,
+    flexDirection: 'column',
+    borderBottomWidth: 1,
+    borderColor: '#dae7ed',
   },
   InputTextContent: {
-    marginTop: 5,
-    marginBottom: 5,
+    margin: 10,
     height: 300,
-    backgroundColor: 'white',
-    borderWidth: 1,
   },
   RegisterButton: {
     justifyContents: 'center',
     alignItems: 'center',
   },
-  CreateTipTitle: {
-    fontSize: 30,
+  buttonContainer: {
+    width: 300,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    borderRadius: 10,
+    backgroundColor: '#1388c2',
+  },
+  disabled: {
+    width: 300,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
+    borderRadius: 10,
+    backgroundColor: '#596c75',
   },
 });
 

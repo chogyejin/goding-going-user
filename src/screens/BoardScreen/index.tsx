@@ -6,6 +6,7 @@ import {
   View,
   Text,
 } from 'react-native';
+import { Icon } from 'native-base';
 import {
   HomeScreens,
   HomeStackParamList,
@@ -16,7 +17,7 @@ import {
 } from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Button } from 'native-base';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 
 type BoardScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -48,32 +49,42 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
     navigation.navigate(HomeScreens.BoardCreation);
   };
 
-  useEffect(() => {
-    async function getPost() {
-      const myShcoolID = await AsyncStorage.getItem('schoolID');
-      const result = await axios.get('http://localhost:4000/api/posts', {
-        params: {
-          schoolID: myShcoolID,
-        },
-      });
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getPost() {
+        const myShcoolID = await AsyncStorage.getItem('schoolID');
+        const result = await axios.get('http://localhost:4000/api/posts', {
+          params: {
+            schoolID: myShcoolID,
+          },
+        });
 
-      if (result.data) {
-        const existsPosts = result.data.posts.length > 0;
-        if (isFirstLoad && existsPosts) {
-          setIsFirstLoad(false);
-          console.log(result.data.posts);
-          setPosts(result.data.posts || []);
+        if (result.data) {
+          const existsPosts = result.data.posts.length > 0;
+          if (isFirstLoad && existsPosts) {
+            setIsFirstLoad(false);
+            console.log(result.data.posts);
+            setPosts(result.data.posts || []);
+          }
+        } else {
+          console.log('실패');
         }
-      } else {
-        console.log('실패');
       }
-    }
-    getPost();
-  }, [posts]);
-
+      getPost();
+    }, [posts]),
+  );
+  //<Icon name="add-circle-outline"></Icon>
   return (
     <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
       <View style={styles.container}>
+        <View style={styles.subTitle}>
+          <Text> 자유 게시판 </Text>
+        </View>
+        <TouchableOpacity
+          style={styles.newPostButton}
+          onPress={onMoveCreationPage}>
+          <Text>새로운 글쓰기</Text>
+        </TouchableOpacity>
         {posts.map((post) => (
           <TouchableOpacity style={styles.postStyle}>
             <Text
@@ -90,6 +101,12 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+  subTitle: {
+    margin: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     margin: 10,
     borderRadius: 5,
@@ -97,12 +114,16 @@ const styles = StyleSheet.create({
     //alignItems: 'center',
   },
   postStyle: {
-    height: 100,
+    height: 80,
     justifyContent: 'center',
     borderBottomWidth: 1,
     borderColor: '#dae7ed',
     //backgroundColor: 'white',
     // alignItems: 'center',
+  },
+  newPostButton: {
+    margin: 10,
+    flexDirection: 'row-reverse',
   },
   // BoardTitle: {
   //   marginTop: 20,

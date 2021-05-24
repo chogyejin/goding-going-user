@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import { Input, Label, Item, InputGroup, Textarea } from 'native-base';
 import {
   HomeScreens,
   HomeStackParamList,
@@ -46,6 +47,11 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
   const [title, setTitle] = useState<string>('');
   //나 = asyncstorage의 userID -> sendingUserID
   //너 = 게시글 쓴 사람(board detail로부터 넘겨받은 userID) -> receivedUserID
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(!(title && contents));
+  }, [contents, title]);
 
   const { navigation, route } = props;
   const { params } = route;
@@ -116,28 +122,34 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.contentBox}>
-        <View style={styles.content}>
-          <TextInput
-            style={styles.messageTitle}
-            placeholder="title"
-            returnKeyType="next"
-            value={title}
-            onChangeText={(text: string) => setTitle(text)}></TextInput>
-          <TextInput
-            style={styles.messageContent}
-            placeholder="message"
-            multiline={true}
-            returnKeyType="next"
+    <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
+      <View style={styles.container}>
+        <View>
+          <InputGroup stackedLabel style={{}}>
+            <Label>제목</Label>
+            <Input
+              value={title}
+              onChangeText={(text: string) => setTitle(text)}
+            />
+          </InputGroup>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Label> 내용</Label>
+          <Textarea
+            style={{ height: 400 }}
+            rowSpan={5}
             value={contents}
-            onChangeText={(text: string) => setContents(text)}></TextInput>
+            onChangeText={(text: string) => setContents(text)}
+          />
         </View>
-        <View style={{ alignItems: 'flex-end', marginRight: 10 }}>
-          <TouchableOpacity style={styles.button} onPress={sendMessage}>
-            <Text style={styles.buttonText}>SEND</Text>
-          </TouchableOpacity>
-        </View>
+      </View>
+      <View style={{ alignItems: 'flex-end', margin: 10 }}>
+        <TouchableOpacity
+          onPress={sendMessage}
+          disabled={disabled}
+          style={disabled ? styles.disabled : styles.buttonContainer}>
+          <Text>작성 완료</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -146,46 +158,27 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#dae7ed',
-    backgroundColor: 'white',
-  },
-  contentBox: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    padding: 10,
-    marginTop: 50,
-    flexDirection: 'column',
+    margin: 10,
     backgroundColor: 'white',
   },
 
-  messageTitle: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-  },
-  messageContent: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
-    height: 400,
-    flexShrink: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-  },
-  buttonText: {
-    color: 'white',
-  },
-  button: {
-    height: 20,
-    width: 40,
-    marginBottom: 10,
-    borderRadius: 5,
+  buttonContainer: {
+    width: 100,
+    height: 40,
     alignItems: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    borderRadius: 10,
     backgroundColor: '#1388c2',
+  },
+  disabled: {
+    width: 100,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: '#596c75',
   },
 });
 

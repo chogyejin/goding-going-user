@@ -66,17 +66,15 @@ const TeacherTipDetail: React.FunctionComponent<TeacherTipDetailProps> = (
   }, [tips]);
 
   return (
-    <SafeAreaView>
-      <Text style={styles.TeacherTipDetailTitle}>게시판 상세</Text>
-      <View style={styles.subTitle}>
-        <Text>팁제목</Text>
-        <Text>팁내용</Text>
-      </View>
+    <SafeAreaView style={styles.container}>
       <View>
         {tips.map((tip) => (
-          <Text key={tip.id}>
-            {tip.title} {tip.contents}
-          </Text>
+          <View style={styles.tipList}>
+            <Text style={{ fontWeight: '600' }} key={tip.id}>
+              [ {tip.title} ]
+            </Text>
+            <Text key={tip.id}>{tip.contents}</Text>
+          </View>
         ))}
       </View>
     </SafeAreaView>
@@ -84,11 +82,14 @@ const TeacherTipDetail: React.FunctionComponent<TeacherTipDetailProps> = (
 };
 
 const styles = StyleSheet.create({
-  TeacherTipDetailTitle: {
-    fontSize: 30,
+  container: {
+    flex: 1,
+    backgroundColor: '#dae7ed',
   },
-  subTitle: {
-    flexDirection: 'row',
+  tipList: {
+    backgroundColor: 'white',
+    margin: 10,
+    padding: 10,
   },
 });
 

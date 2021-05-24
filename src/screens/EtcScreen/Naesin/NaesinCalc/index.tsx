@@ -212,23 +212,22 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
     let sumOf5 = 0;
     let result = 0;
 
-    console.log(totalScore);
-
     for (const ele of totalScore.firstGrade.firstSemester) {
-      sumOf1 += ele.score;
+      sumOf1 += Number(ele.score);
     }
     for (const ele of totalScore.firstGrade.lastSemester) {
-      sumOf2 += ele.score;
+      sumOf2 += Number(ele.score);
     }
     for (const ele of totalScore.secondGrade.firstSemester) {
-      sumOf3 += ele.score;
+      sumOf3 += Number(ele.score);
     }
     for (const ele of totalScore.secondGrade.lastSemester) {
-      sumOf4 += ele.score;
+      sumOf4 += Number(ele.score);
     }
     for (const ele of totalScore.thirdGrade.firstSemester) {
-      sumOf5 += ele.score;
+      sumOf5 += Number(ele.score);
     }
+
     result =
       ((sumOf1 + sumOf2) * Number(firstGradePercent)) / 1000 +
       ((sumOf3 + sumOf4) * Number(secondGradePercent)) / 1000 +
@@ -255,15 +254,15 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
         setTotalScore({
           firstGrade: {
             firstSemester: result.data.naesin.grade1FirstSemester,
-            lastSemester: result.data.naesin.grade1FirstSemester,
+            lastSemester: result.data.naesin.grade1LastSemester,
           },
           secondGrade: {
-            firstSemester: result.data.naesin.grade1FirstSemester,
-            lastSemester: result.data.naesin.grade1FirstSemester,
+            firstSemester: result.data.naesin.grade2FirstSemester,
+            lastSemester: result.data.naesin.grade2LastSemester,
           },
           thirdGrade: {
-            firstSemester: result.data.naesin.grade1FirstSemester,
-            lastSemester: result.data.naesin.grade1FirstSemester,
+            firstSemester: result.data.naesin.grade3FirstSemester,
+            lastSemester: result.data.naesin.grade3LastSemester,
           },
         });
       } else {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TextInput, SafeAreaView } from 'react-native';
 import {
   HomeScreens,
   HomeStackParamList,
@@ -112,27 +112,29 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
     getNaesin();
   });
 
-  const onChangeScore = (
-    gradeName: 'firstGrade' | 'secondGrade' | 'thirdGrade',
-    semesterName: 'firstSemester' | 'lastSemester',
-    subjectName: string,
-  ) => (text: string) => {
-    const convertedSubjects = totalScore[gradeName][semesterName].map(
-      (subject) => {
-        return subject.subjectName === subjectName
-          ? { ...subject, score: Number(text) }
-          : { ...subject };
-      },
-    );
+  const onChangeScore =
+    (
+      gradeName: 'firstGrade' | 'secondGrade' | 'thirdGrade',
+      semesterName: 'firstSemester' | 'lastSemester',
+      subjectName: string,
+    ) =>
+    (text: string) => {
+      const convertedSubjects = totalScore[gradeName][semesterName].map(
+        (subject) => {
+          return subject.subjectName === subjectName
+            ? { ...subject, score: Number(text) }
+            : { ...subject };
+        },
+      );
 
-    setTotalScore({
-      ...totalScore,
-      [gradeName]: {
-        ...totalScore[gradeName],
-        [semesterName]: convertedSubjects,
-      },
-    });
-  };
+      setTotalScore({
+        ...totalScore,
+        [gradeName]: {
+          ...totalScore[gradeName],
+          [semesterName]: convertedSubjects,
+        },
+      });
+    };
 
   const onCreateNaesin = async () => {
     const userID = await AsyncStorage.getItem('userID');
@@ -178,68 +180,156 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
   };
 
   return (
-    <>
-      <View style={styles.containter}>
-        <View style={styles.first}>
-          <View style={{ flex: 2 }}>
+    <SafeAreaView style={styles.containter}>
+      <View style={styles.contents}>
+        <View>
+          <View style={styles.grade1}>
             <Text>1학년</Text>
           </View>
-          <View style={{ flex: 2 }}>
+          <View style={styles.grade2}>
             <Text>2학년</Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={styles.grade3}>
             <Text>3학년</Text>
           </View>
         </View>
 
-        <View style={styles.second}>
-          <View style={{ flex: 1 }}>
+        <View style={styles.semester}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#e8f6fc',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+            }}>
             <Text>1학기</Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#e8f6fc',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+            }}>
             <Text>2학기</Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#dae7ed',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+            }}>
             <Text>1학기</Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#dae7ed',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+            }}>
             <Text>2학기</Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#c3d0d6',
+            }}>
             <Text>1학기</Text>
           </View>
         </View>
 
-        <View style={styles.third}>
-          <View style={{ flex: 1 }}>
+        <View style={styles.subjects}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#e8f6fc',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.firstGrade.firstSemester.map((subject, index) => (
               <View key={index}>
                 <Text>{subject.subjectName}</Text>
               </View>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#e8f6fc',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.firstGrade.lastSemester.map((subject, index) => (
               <View key={index}>
                 <Text>{subject.subjectName}</Text>
               </View>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#dae7ed',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.secondGrade.firstSemester.map((subject, index) => (
               <View key={index}>
                 <Text>{subject.subjectName}</Text>
               </View>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#dae7ed',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.secondGrade.lastSemester.map((subject, index) => (
               <View key={index}>
                 <Text>{subject.subjectName}</Text>
               </View>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#c3d0d6',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.thirdGrade.firstSemester.map((subject, index) => (
               <View key={index}>
                 <Text>{subject.subjectName}</Text>
@@ -248,12 +338,21 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
           </View>
         </View>
 
-        <View style={styles.forth}>
-          <View style={{ flex: 1 }}>
+        <View style={styles.score}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#e8f6fc',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+            }}>
             {totalScore.firstGrade.firstSemester.map((subject, index) => (
               <TextInput
                 key={index}
-                style={{ fontSize: 16 }}
+                style={{ fontSize: 16, width: 20 }}
                 value={String(subject.score)}
                 onChangeText={onChangeScore(
                   'firstGrade',
@@ -262,11 +361,20 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
                 )}></TextInput>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#e8f6fc',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+            }}>
             {totalScore.firstGrade.lastSemester.map((subject, index) => (
               <TextInput
                 key={index}
-                style={{ fontSize: 16 }}
+                style={{ fontSize: 16, width: 20 }}
                 value={String(subject.score)}
                 onChangeText={onChangeScore(
                   'firstGrade',
@@ -275,11 +383,20 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
                 )}></TextInput>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#dae7ed',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.secondGrade.firstSemester.map((subject, index) => (
               <TextInput
                 key={index}
-                style={{ fontSize: 16 }}
+                style={{ fontSize: 16, width: 20 }}
                 value={String(subject.score)}
                 onChangeText={onChangeScore(
                   'secondGrade',
@@ -288,11 +405,20 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
                 )}></TextInput>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#dae7ed',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.secondGrade.lastSemester.map((subject, index) => (
               <TextInput
                 key={index}
-                style={{ fontSize: 16 }}
+                style={{ fontSize: 16, width: 20 }}
                 value={String(subject.score)}
                 onChangeText={onChangeScore(
                   'secondGrade',
@@ -301,11 +427,20 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
                 )}></TextInput>
             ))}
           </View>
-          <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              backgroundColor: '#c3d0d6',
+              borderBottomWidth: 1,
+              borderColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             {totalScore.thirdGrade.firstSemester.map((subject, index) => (
               <TextInput
                 key={index}
-                style={{ fontSize: 16 }}
+                style={{ fontSize: 16, width: 20 }}
                 value={String(subject.score)}
                 onChangeText={onChangeScore(
                   'thirdGrade',
@@ -321,30 +456,70 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
           <Text>비율 계산 페이지로 이동</Text>
         </TouchableOpacity>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   containter: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  first: {
-    flex: 1,
-    backgroundColor: 'red',
-  },
-  second: {
-    flex: 1,
-    backgroundColor: 'yellow',
-  },
-  third: {
-    flex: 1,
-    backgroundColor: 'red',
-  },
-  forth: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  contents: {
+    flex: 1,
+    margin: 10,
+    flexDirection: 'row',
+  },
+  grade1: {
+    flex: 2,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: 'white',
+    backgroundColor: '#e8f6fc',
+  },
+  grade2: {
+    flex: 2,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: 'white',
+    backgroundColor: '#dae7ed',
+  },
+  grade3: {
+    flex: 1,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: 'white',
+    backgroundColor: '#c3d0d6',
+  },
+  semester: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: 'white',
+  },
+
+  subjects: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 1,
+    borderColor: 'white',
+  },
+  score: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   calcButton: {
     alignItems: 'center',

@@ -21,9 +21,7 @@ type ChangeNickNameNavigationProps = StackNavigationProp<
   HomeScreens.ChangeNickName
 >;
 
-export type ChangeNickNameParams = {
-  symbol: string;
-};
+export type ChangeNickNameParams = {};
 
 interface ChangeNickNameProps {
   route: { params: ChangeNickNameParams };
@@ -35,7 +33,6 @@ const ChangeNickName: React.FunctionComponent<ChangeNickNameProps> = (
 ) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
   const [nickName, setNickname] = useState<string>('');
   const [checkedNickname, setCheckedNickname] = useState(false);
 
@@ -72,7 +69,7 @@ const ChangeNickName: React.FunctionComponent<ChangeNickNameProps> = (
         },
       );
 
-      navigation.navigate(HomeScreens.Profile, { symbol });
+      navigation.navigate(HomeScreens.Profile, {});
     }
   };
 

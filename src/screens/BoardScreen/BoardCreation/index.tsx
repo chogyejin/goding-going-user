@@ -25,10 +25,7 @@ type BoardCreationNavigationProps = StackNavigationProp<
   HomeScreens.BoardCreation
 >;
 
-export type BoardCreationParams = {
-  postID: string;
-  symbol: string;
-};
+export type BoardCreationParams = {};
 
 interface BoardCreationProps {
   route: { params: BoardCreationParams };

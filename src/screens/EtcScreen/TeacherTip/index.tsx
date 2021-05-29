@@ -20,9 +20,7 @@ type TeacherTipNavigationProps = StackNavigationProp<
   HomeScreens.TeacherTip
 >;
 
-export type TeacherTipParams = {
-  symbol: string;
-};
+export type TeacherTipParams = {};
 
 interface TeacherTipProps {
   route: { params: TeacherTipParams };
@@ -40,7 +38,6 @@ interface Teacher {
 const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
   const [teachers, setTeachers] = useState<Teacher[]>([]);
 
   const moveTeacher = (teacherID: string) => () => {
@@ -77,9 +74,7 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
         </View>
         <View style={styles.CreateTipButton}>
           <Text
-            onPress={() =>
-              navigation.navigate(HomeScreens.CreateTip, { symbol })
-            }
+            onPress={() => navigation.navigate(HomeScreens.CreateTip, {})}
             style={{ padding: 10 }}>
             팁 작성
           </Text>

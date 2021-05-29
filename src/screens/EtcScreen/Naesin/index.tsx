@@ -56,9 +56,7 @@ interface ITotalScore {
   };
 }
 
-export type NaesinParams = {
-  symbol: string;
-};
+export type NaesinParams = {};
 
 interface NaesinProps {
   route: { params: NaesinParams };
@@ -77,7 +75,6 @@ const SUBJECT_INFOS = [
 const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
   const [totalScore, setTotalScore] = useState<ITotalScore>({
     firstGrade: {
       firstSemester: DEFAULT_SUBJECT_INFO,
@@ -106,7 +103,7 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
         },
       });
       if (result.data && result.data.naesin) {
-        navigation.navigate(HomeScreens.NaesinCalc, { symbol });
+        navigation.navigate(HomeScreens.NaesinCalc, {});
       }
     }
     getNaesin();
@@ -175,7 +172,7 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
     );
 
     if (result.data) {
-      navigation.navigate(HomeScreens.NaesinCalc, { symbol });
+      navigation.navigate(HomeScreens.NaesinCalc, {});
     }
   };
 

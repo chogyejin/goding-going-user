@@ -52,9 +52,7 @@ interface ITotalScore {
   };
 }
 
-export type NaesinCalcParams = {
-  symbol: string;
-};
+export type NaesinCalcParams = {};
 
 interface NaesinCalcProps {
   route: { params: NaesinCalcParams };

@@ -52,7 +52,6 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { postID } = params;
-  const { symbol } = params;
   const [isCompletedLoading, setIsCompletedLoading] = useState<boolean>(false);
   const [post, setPost] = useState<IPost>({
     id: '',
@@ -159,7 +158,7 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
         <View>
           <TouchableOpacity
             style={{ alignItems: 'center' }}
-            onPress={() => navigation.navigate(HomeScreens.Board, { symbol })}>
+            onPress={() => navigation.navigate(HomeScreens.Board, {})}>
             <Text>게시판 리스트로</Text>
           </TouchableOpacity>
         </View>

@@ -39,9 +39,6 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
   const [disabled, setDisabled] = useState(true); // email,pswd 미입력 -> 버튼 불가
 
   const { navigation } = props;
-  const initialSymbol: string = '';
-  const [symbol, setSymbol] = useState<string>(initialSymbol);
-  // LoginScreenProps 에 navigation 이 있으니까 비구조화 할당으로 꺼내쓸 수 있음
 
   const login = async () => {
     const result = await axios.get('http://localhost:4000/api/login', {
@@ -54,7 +51,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
       // 가져온 데이터 로컬 저장소에 저장하는 코드 추가
       AsyncStorage.setItem('userID', result.data.user.id);
       AsyncStorage.setItem('schoolID', result.data.user.schoolID);
-      navigation.navigate(HomeScreens.Details, { symbol });
+      navigation.navigate(HomeScreens.Details, {});
     }
   };
 
@@ -68,7 +65,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
     async function isLogin() {
       const asyncUserID = await AsyncStorage.getItem('userID');
       if (asyncUserID) {
-        navigation.navigate(HomeScreens.Details, { symbol });
+        navigation.navigate(HomeScreens.Details, {});
       }
     }
     isLogin();
@@ -121,9 +118,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(HomeScreens.SignUp, { symbol })
-                  }>
+                  onPress={() => navigation.navigate(HomeScreens.SignUp, {})}>
                   <Text style={styles.buttonText}>회원가입</Text>
                 </TouchableOpacity>
               </View>

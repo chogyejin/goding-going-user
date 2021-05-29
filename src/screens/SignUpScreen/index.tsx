@@ -34,9 +34,7 @@ type SignUpScreenNavigationProps = StackNavigationProp<
 >;
 
 // ~/src/navigators/HomeStackNavigators/index.tsx 에서 2번 각 스크린 마다 필요한 파라미터 타입 정의해줄 때 SignUp 스크린에 필요한 props 로 지정해줬었음.
-export type SignUpParams = {
-  symbol: string; // SignUpScreen 에는 symbol 이라는 이름의 string 타입의 파라미터가 필요하다.
-};
+export type SignUpParams = {};
 
 // SignUpScreen Props 의 타입들을 지정. (리액트에서 proptypes 지정하는 것 처럼)
 interface SignUpScreenProps {
@@ -107,7 +105,7 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
         },
       },
     );
-    navigation.navigate(HomeScreens.Details, { symbol });
+    navigation.navigate(HomeScreens.Details, {});
   };
 
   const checkNickName = async () => {
@@ -143,7 +141,6 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
 
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -236,8 +233,6 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
                 </Item>
               </Form>
             </Content>
-
-            <Text style={styles.txtSymbol}>{symbol}</Text>
           </View>
           <View style={{ alignItems: 'center', marginTop: 30 }}>
             <TouchableOpacity
@@ -282,10 +277,6 @@ const styles = StyleSheet.create({
   txtSignupScreenContainer: {
     flex: 1,
     justifyContent: 'center',
-  },
-  txtSymbol: {
-    fontSize: 25,
-    color: 'grey',
   },
   nickNameDuplicate: {
     height: 30,

@@ -24,7 +24,7 @@ type DetailsScreenNavigationProps = StackNavigationProp<
 
 // ~/src/navigators/HomeStackNavigators/index.tsx 에서 2번 각 스크린 마다 필요한 파라미터 타입 정의해줄 때 Details 스크린에 필요한 props 로 지정해줬었음.
 export type DetailsParams = {
-  symbol: string; // DetailsScreen 에는 symbol 이라는 이름의 string 타입의 파라미터가 필요하다.
+  // DetailsScreen 에는 symbol 이라는 이름의 string 타입의 파라미터가 필요하다.
 };
 
 // DetailsScreen Props 의 타입들을 지정. (리액트에서 proptypes 지정하는 것 처럼)
@@ -52,10 +52,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  txtSymbol: {
-    fontSize: 25,
-    color: 'grey',
-  },
   tab: {
     flex: 1,
   },
@@ -64,7 +60,6 @@ const styles = StyleSheet.create({
 const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
   const [schoolFoods, setSchoolFoods] = useState<Array<{ DDISH_NM: string }>>(
     [],
   );
@@ -132,37 +127,25 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
             </Text>
           ))}
         </Text>
-        <Text style={styles.txtSymbol}>{symbol}</Text>
       </View>
       <View>
         <View style={styles.tab}>
           <FooterTab>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Details, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Details, {})}>
               <Icon name="home" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="reader-outline" />
             </Button>
-            <Button
-              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+            <Button onPress={() => navigation.navigate(HomeScreens.Etc, {})}>
               <Icon name="grid-outline" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="chatbox-outline" />
             </Button>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Profile, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Profile, {})}>
               <Icon name="person" />
             </Button>
           </FooterTab>

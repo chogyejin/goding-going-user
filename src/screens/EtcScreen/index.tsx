@@ -19,9 +19,7 @@ type EtcScreenNavigationProps = StackNavigationProp<
   HomeScreens.Etc
 >;
 
-export type EtcParams = {
-  symbol: string;
-};
+export type EtcParams = {};
 
 interface EtcScreenProps {
   route: { params: EtcParams };
@@ -31,7 +29,6 @@ interface EtcScreenProps {
 const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
 
   return (
     <SafeAreaView
@@ -48,20 +45,18 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
 
           <TouchableOpacity
             style={styles.list}
-            onPress={() => navigation.navigate(HomeScreens.Board, { symbol })}>
+            onPress={() => navigation.navigate(HomeScreens.Board, {})}>
             <Text> - 자유게시판 </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.list}
-            onPress={() =>
-              navigation.navigate(HomeScreens.TeacherTip, { symbol })
-            }>
+            onPress={() => navigation.navigate(HomeScreens.TeacherTip, {})}>
             <Text> - 선생님 팁 게시판 버튼</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.list}
-            onPress={() => navigation.navigate(HomeScreens.Naesin, { symbol })}>
+            onPress={() => navigation.navigate(HomeScreens.Naesin, {})}>
             <Text>내신 계산기</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.list}>
@@ -73,31 +68,20 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
         <View style={styles.tab}>
           <FooterTab>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Details, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Details, {})}>
               <Icon name="home" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="reader-outline" />
             </Button>
-            <Button
-              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+            <Button onPress={() => navigation.navigate(HomeScreens.Etc, {})}>
               <Icon name="grid-outline" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="chatbox-outline" />
             </Button>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Profile, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Profile, {})}>
               <Icon name="person" />
             </Button>
           </FooterTab>
@@ -108,6 +92,9 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+  tab: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     margin: 10,

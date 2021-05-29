@@ -21,9 +21,7 @@ type ChangePasswordNavigationProps = StackNavigationProp<
   HomeScreens.ChangePassword
 >;
 
-export type ChangePasswordParams = {
-  symbol: string;
-};
+export type ChangePasswordParams = {};
 
 interface ChangePasswordProps {
   route: { params: ChangePasswordParams };
@@ -35,7 +33,6 @@ const ChangePassword: React.FunctionComponent<ChangePasswordProps> = (
 ) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [changedPassword, setchangedPassword] = useState<string>('');
   const [changedPasswordCheck, setChangedPasswordCheck] = useState<string>('');
@@ -61,7 +58,7 @@ const ChangePassword: React.FunctionComponent<ChangePasswordProps> = (
     if (!result.data) {
       alert('바꿀 수 없습니다');
     } else {
-      navigation.navigate(HomeScreens.Profile, { symbol });
+      navigation.navigate(HomeScreens.Profile, {});
     }
   };
 

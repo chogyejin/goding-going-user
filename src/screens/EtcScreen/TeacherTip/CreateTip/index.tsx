@@ -16,9 +16,7 @@ type CreateTipNavigationProps = StackNavigationProp<
   HomeScreens.CreateTip
 >;
 
-export type CreateTipParams = {
-  symbol: string;
-};
+export type CreateTipParams = {};
 
 interface CreateTipProps {
   route: { params: CreateTipParams };
@@ -38,7 +36,6 @@ interface ITip {
 const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
   const [tips, setTips] = useState<ITip[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string>();
   const [teacherName, setTeacherName] = useState<string>('');
@@ -68,7 +65,7 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
       },
     );
     if (result.data) {
-      navigation.navigate(HomeScreens.TeacherTip, { symbol });
+      navigation.navigate(HomeScreens.TeacherTip, {});
     }
   };
 

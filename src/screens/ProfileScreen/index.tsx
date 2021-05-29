@@ -22,9 +22,7 @@ type ProfileScreenNavigationProps = StackNavigationProp<
   HomeScreens.Profile
 >;
 
-export type ProfileParams = {
-  symbol: string;
-};
+export type ProfileParams = {};
 
 interface ProfileScreenProps {
   route: { params: ProfileParams };
@@ -35,7 +33,6 @@ interface ProfileScreenProps {
 const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,17 +44,13 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
       </View>
       <View>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(HomeScreens.ChangePassword, { symbol })
-          }>
+          onPress={() => navigation.navigate(HomeScreens.ChangePassword, {})}>
           <Text style={{ borderWidth: 1 }}>비밀번호 변경</Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(HomeScreens.ChangeNickName, { symbol })
-          }>
+          onPress={() => navigation.navigate(HomeScreens.ChangeNickName, {})}>
           <Text style={{ borderWidth: 1 }}>닉네임 변경</Text>
         </TouchableOpacity>
       </View>
@@ -65,31 +58,20 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
         <View style={styles.tab}>
           <FooterTab>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Details, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Details, {})}>
               <Icon name="home" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="reader-outline" />
             </Button>
-            <Button
-              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+            <Button onPress={() => navigation.navigate(HomeScreens.Etc, {})}>
               <Icon name="grid-outline" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="chatbox-outline" />
             </Button>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Profile, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Profile, {})}>
               <Icon name="person" />
             </Button>
           </FooterTab>

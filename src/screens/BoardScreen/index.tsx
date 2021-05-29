@@ -29,9 +29,7 @@ type BoardScreenNavigationProps = StackNavigationProp<
   HomeScreens.Board
 >;
 
-export type BoardParams = {
-  symbol: string;
-};
+export type BoardParams = {};
 
 interface BoardScreenProps {
   route: { params: BoardParams };
@@ -51,7 +49,6 @@ interface Post {
 const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
-  const { symbol } = params;
   const [posts, setPosts] = useState<Post[]>([]);
   const [isFirstLoad, setIsFirstLoad] = useState<Boolean>(true);
   const [selectedCategory, setSelectedCategroy] = useState<string>('전체 보기');
@@ -61,7 +58,7 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   };
 
   const onMoveCreationPage = () => {
-    navigation.navigate(HomeScreens.BoardCreation, { symbol });
+    navigation.navigate(HomeScreens.BoardCreation, {});
   };
 
   useFocusEffect(
@@ -150,31 +147,20 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
         <View style={styles.tab}>
           <FooterTab>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Details, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Details, {})}>
               <Icon name="home" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="reader-outline" />
             </Button>
-            <Button
-              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+            <Button onPress={() => navigation.navigate(HomeScreens.Etc, {})}>
               <Icon name="grid-outline" />
             </Button>
-            <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Board, { symbol })
-              }>
+            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
               <Icon name="chatbox-outline" />
             </Button>
             <Button
-              onPress={() =>
-                navigation.navigate(HomeScreens.Profile, { symbol })
-              }>
+              onPress={() => navigation.navigate(HomeScreens.Profile, {})}>
               <Icon name="person" />
             </Button>
           </FooterTab>

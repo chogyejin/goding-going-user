@@ -47,9 +47,6 @@ const styles = StyleSheet.create({
     display: 'block',
     marginBottom: 50,
   },
-  txtSignupScreen: {
-    fontSize: 30,
-  },
   txtSignupScreenContainer: {
     flex: 1,
     alignItems: 'center',
@@ -68,7 +65,9 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { symbol } = params;
-  const [schoolFoods, setSchoolFoods] = useState([]);
+  const [schoolFoods, setSchoolFoods] = useState<Array<{ DDISH_NM: string }>>(
+    [],
+  );
   const [schoolID, setSchoolID] = useState<string>('');
 
   useEffect(() => {
@@ -105,10 +104,31 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.txtSignupScreenContainer}>
-        <Text style={styles.txtSignupScreen}>
+        <Text style={{ display: 'flex', justifyContent: 'space-between' }}>
           {schoolFoods.map((schoolFood, index) => (
-            <Text key={index} style={styles.foodContainer}>
-              {schoolFood.DDISH_NM}
+            <Text key={index}>
+              <table style={{ border: 'solid black 1px' }}>
+                <thead>
+                  <td
+                    style={{
+                      borderBottom: 'solid black 2px',
+                      textAlign: 'center',
+                    }}>
+                    {index === 0 ? '점심' : '저녁'}
+                  </td>
+                </thead>
+                <tbody>
+                  {schoolFood.DDISH_NM.split('<br/>').map((menu) => (
+                    <tr>
+                      <td style={{ padding: '4px' }}>
+                        {menu.replace(/[0-9]/g, '').replace(/["."]/g, '')}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <br />
             </Text>
           ))}
         </Text>

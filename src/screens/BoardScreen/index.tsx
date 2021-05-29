@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   View,
   Text,
+  Dimensions,
 } from 'react-native';
-import { Icon } from 'native-base';
+import { FooterTab, Icon } from 'native-base';
 import {
   HomeScreens,
   HomeStackParamList,
@@ -28,9 +29,12 @@ type BoardScreenNavigationProps = StackNavigationProp<
   HomeScreens.Board
 >;
 
-export type BoardParams = {};
+export type BoardParams = {
+  symbol: string;
+};
 
 interface BoardScreenProps {
+  route: { params: BoardParams };
   navigation: BoardScreenNavigationProps;
 }
 
@@ -45,7 +49,9 @@ interface Post {
   };
 }
 const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { params } = route;
+  const { symbol } = params;
   const [posts, setPosts] = useState<Post[]>([]);
   const [isFirstLoad, setIsFirstLoad] = useState<Boolean>(true);
   const [selectedCategory, setSelectedCategroy] = useState<string>('전체 보기');
@@ -55,7 +61,7 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   };
 
   const onMoveCreationPage = () => {
-    navigation.navigate(HomeScreens.BoardCreation);
+    navigation.navigate(HomeScreens.BoardCreation, { symbol });
   };
 
   useFocusEffect(
@@ -98,7 +104,14 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
 
   //<Icon name="add-circle-outline"></Icon>
   return (
-    <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: '#dae7ed',
+        flex: 1,
+        justifyContent: 'space-between',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+      }}>
       <View style={styles.container}>
         <View style={styles.subTitle}>
           <Text>게시판 </Text>
@@ -132,6 +145,40 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
             </Text>
           </TouchableOpacity>
         ))}
+      </View>
+      <View>
+        <View style={styles.tab}>
+          <FooterTab>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Details, { symbol })
+              }>
+              <Icon name="home" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
+              <Icon name="reader-outline" />
+            </Button>
+            <Button
+              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+              <Icon name="grid-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
+              <Icon name="chatbox-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Profile, { symbol })
+              }>
+              <Icon name="person" />
+            </Button>
+          </FooterTab>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -176,6 +223,10 @@ const styles = StyleSheet.create({
   //   borderRadius: 10,
   //   padding: 10,
   // },
+
+  tab: {
+    flex: 1,
+  },
 });
 
 export default BoardScreen;

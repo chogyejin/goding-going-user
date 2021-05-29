@@ -52,6 +52,7 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
   const { postID } = params;
+  const { symbol } = params;
   const [isCompletedLoading, setIsCompletedLoading] = useState<boolean>(false);
   const [post, setPost] = useState<IPost>({
     id: '',
@@ -154,6 +155,13 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
         </View>
         <View>
           <TextInput style={styles.replyBox} placeholder="  reply"></TextInput>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={{ alignItems: 'center' }}
+            onPress={() => navigation.navigate(HomeScreens.Board, { symbol })}>
+            <Text>게시판 리스트로</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

@@ -1,4 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Button, FooterTab, Icon } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
@@ -6,6 +7,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {
   HomeScreens,
@@ -32,7 +34,14 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
   const { symbol } = params;
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: '#dae7ed',
+        flex: 1,
+        justifyContent: 'space-between',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+      }}>
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <Text>게시판 바로 가기</Text>
@@ -58,6 +67,40 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
           <TouchableOpacity style={styles.list}>
             <Text> - 무슨 무슨 게시판 </Text>
           </TouchableOpacity>
+        </View>
+      </View>
+      <View>
+        <View style={styles.tab}>
+          <FooterTab>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Details, { symbol })
+              }>
+              <Icon name="home" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
+              <Icon name="reader-outline" />
+            </Button>
+            <Button
+              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+              <Icon name="grid-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
+              <Icon name="chatbox-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Profile, { symbol })
+              }>
+              <Icon name="person" />
+            </Button>
+          </FooterTab>
         </View>
       </View>
     </SafeAreaView>

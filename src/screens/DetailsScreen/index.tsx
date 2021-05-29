@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'space-between', //
+    justifyContent: 'space-between',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
@@ -137,11 +137,11 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
       <View>
         <View style={styles.tab}>
           <FooterTab>
-            <Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Details, { symbol })
+              }>
               <Icon name="home" />
-            </Button>
-            <Button>
-              <Icon name="restaurant-outline" />
             </Button>
             <Button
               onPress={() =>
@@ -150,14 +150,20 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
               <Icon name="reader-outline" />
             </Button>
             <Button
+              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+              <Icon name="grid-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
+              <Icon name="chatbox-outline" />
+            </Button>
+            <Button
               onPress={() =>
                 navigation.navigate(HomeScreens.Profile, { symbol })
               }>
               <Icon name="person" />
-            </Button>
-            <Button
-              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
-              <Icon name="grid-outline" />
             </Button>
           </FooterTab>
         </View>

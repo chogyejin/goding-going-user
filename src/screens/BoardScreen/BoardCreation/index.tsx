@@ -27,6 +27,7 @@ type BoardCreationNavigationProps = StackNavigationProp<
 
 export type BoardCreationParams = {
   postID: string;
+  symbol: string;
 };
 
 interface BoardCreationProps {

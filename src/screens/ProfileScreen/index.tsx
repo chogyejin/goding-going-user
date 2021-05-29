@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
@@ -14,6 +15,7 @@ import {
 } from '../../navigators/HomeStackNavigators';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Button, FooterTab, Icon } from 'native-base';
 
 type ProfileScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -36,7 +38,7 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
   const { symbol } = params;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <View style={styles.logo}>
         <Image
           style={{ height: 100, width: 100 }}
@@ -59,6 +61,40 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
           <Text style={{ borderWidth: 1 }}>닉네임 변경</Text>
         </TouchableOpacity>
       </View>
+      <View>
+        <View style={styles.tab}>
+          <FooterTab>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Details, { symbol })
+              }>
+              <Icon name="home" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
+              <Icon name="reader-outline" />
+            </Button>
+            <Button
+              onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>
+              <Icon name="grid-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Board, { symbol })
+              }>
+              <Icon name="chatbox-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Profile, { symbol })
+              }>
+              <Icon name="person" />
+            </Button>
+          </FooterTab>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -66,6 +102,9 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-between',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
   logo: {
     //flex: 1,
@@ -73,6 +112,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     marginTop: 30,
+  },
+  tab: {
+    flex: 1,
   },
 });
 

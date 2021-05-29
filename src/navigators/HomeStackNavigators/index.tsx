@@ -83,29 +83,45 @@ export type HomeStackParamList = {
 
 // 3. 방금 만든 타입을 createStackNavigator 메소드 앞에 지정해주서 HomeStack 네비게이터 객체를 만들어줌.
 const HomeStack = createStackNavigator<HomeStackParamList>();
-const SubStack = createStackNavigator<HomeStackParamList>();
 const HomeStackNavigator: React.FunctionComponent = () => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name={HomeScreens.Login} component={LoginScreen} />
-      <HomeStack.Screen name={HomeScreens.Details} component={DetailsScreen} />
+      <HomeStack.Screen
+        name={HomeScreens.Details}
+        component={DetailsScreen}
+        options={{ headerLeft: () => null }}
+      />
       <HomeStack.Screen name={HomeScreens.SignUp} component={SignUpScreen} />
-      <HomeStack.Screen name={HomeScreens.Board} component={BoardScreen} />
+      <HomeStack.Screen
+        name={HomeScreens.Board}
+        component={BoardScreen}
+        options={{ headerLeft: () => null }}
+      />
       <HomeStack.Screen
         name={HomeScreens.BoardDetail}
         component={BoardDetail}
+        options={{ headerLeft: () => null }}
       />
       <HomeStack.Screen
         name={HomeScreens.BoardCreation}
         component={BoardCreation}
       />
-      <HomeStack.Screen name={HomeScreens.Etc} component={EtcScreen} />
+      <HomeStack.Screen
+        name={HomeScreens.Etc}
+        component={EtcScreen}
+        options={{ headerLeft: () => null }}
+      />
       <HomeStack.Screen name={HomeScreens.TeacherTip} component={TeacherTip} />
       <HomeStack.Screen
         name={HomeScreens.TeacherTipDetail}
         component={TeacherTipDetail}
       />
-      <HomeStack.Screen name={HomeScreens.Message} component={MessageScreen} />
+      <HomeStack.Screen
+        name={HomeScreens.Message}
+        component={MessageScreen}
+        options={{ headerLeft: () => null }}
+      />
       <HomeStack.Screen
         name={HomeScreens.MessageDetail}
         component={MessageDetail}
@@ -113,7 +129,11 @@ const HomeStackNavigator: React.FunctionComponent = () => {
       <HomeStack.Screen name={HomeScreens.CreateTip} component={CreateTip} />
       <HomeStack.Screen name={HomeScreens.Naesin} component={Naesin} />
       <HomeStack.Screen name={HomeScreens.NaesinCalc} component={NaesinCalc} />
-      <HomeStack.Screen name={HomeScreens.Profile} component={ProfileScreen} />
+      <HomeStack.Screen
+        name={HomeScreens.Profile}
+        component={ProfileScreen}
+        options={{ headerLeft: () => null }}
+      />
       <HomeStack.Screen
         name={HomeScreens.ChangePassword}
         component={ChangePassword}

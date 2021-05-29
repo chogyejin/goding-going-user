@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Dimensions } from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 import {
   Container,
   Content,
@@ -33,6 +40,14 @@ interface DetailsScreenProps {
   navigation: DetailsScreenNavigationProps;
 }
 
+interface IUser {
+  name: string;
+  nickName: string;
+  school: {
+    name: string;
+  };
+}
+
 const styles = StyleSheet.create({
   btnLoginContainer: {
     alignSelf: 'center',
@@ -42,15 +57,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', //
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+    backgroundColor: '#dae7ed',
   },
   foodContainer: {
-    display: 'block',
     marginBottom: 50,
   },
   txtSignupScreenContainer: {
+    backgroundColor: 'white',
+    margin: 16,
+    padding: 16,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: 5,
   },
   txtSymbol: {
     fontSize: 25,
@@ -58,6 +75,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
+    backgroundColor: 'white',
   },
 });
 
@@ -69,6 +87,13 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
     [],
   );
   const [schoolID, setSchoolID] = useState<string>('');
+  const [user, setUser] = useState<IUser>({
+    name: '',
+    nickName: '',
+    school: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     async function getMySchoolID() {
@@ -94,7 +119,16 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
           schoolID,
         },
       });
+      const userID = await AsyncStorage.getItem('userID');
+      const {
+        data: { user },
+      } = await axios.get('http://localhost:4000/api/user', {
+        params: {
+          id: userID,
+        },
+      });
       if (result) {
+        setUser(user);
         setSchoolFoods(result.data.schoolFoods);
       }
     }
@@ -104,33 +138,96 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.txtSignupScreenContainer}>
-        <Text style={{ display: 'flex', justifyContent: 'space-between' }}>
-          {schoolFoods.map((schoolFood, index) => (
-            <Text key={index}>
-              <table style={{ border: 'solid black 1px' }}>
-                <thead>
-                  <td
-                    style={{
-                      borderBottom: 'solid black 2px',
-                      textAlign: 'center',
-                    }}>
-                    {index === 0 ? '점심' : '저녁'}
-                  </td>
-                </thead>
-                <tbody>
-                  {schoolFood.DDISH_NM.split('<br/>').map((menu) => (
+        <div
+          style={{
+            border: 'solid black 1px',
+            padding: '8px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}>
+            <div>
+              <div>
+                <Text>
+                  <b>이름</b>: {user.name}
+                </Text>
+              </div>
+              <div>
+                <Text>
+                  <b>닉네임</b>: {user.nickName}
+                </Text>
+              </div>
+              <div>
+                <Text>
+                  <b>학교</b>: {user.school.name}
+                </Text>
+              </div>
+            </div>
+
+            <div>
+              <Image
+                style={{ height: 100, width: 100 }}
+                source={require('../ProfileScreen/profile.png')}
+              />
+            </div>
+          </div>
+          <div>
+            <Image
+              style={{ marginTop: '8px', height: 50, width: '100%' }}
+              source={require('../ProfileScreen/barcode.png')}
+            />
+          </div>
+        </div>
+
+        <Text
+          style={{
+            border: 'solid black 1px',
+            marginTop: '32px',
+          }}>
+          <div
+            style={{
+              textAlign: 'center',
+              fontSize: '24px',
+            }}>
+            급식표
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              padding: '16px',
+            }}>
+            {schoolFoods.map((schoolFood, index) => (
+              <Text key={index}>
+                <table style={{ border: 'solid black 1px' }}>
+                  <thead>
                     <tr>
-                      <td style={{ padding: '4px' }}>
-                        {menu.replace(/[0-9]/g, '').replace(/["."]/g, '')}
+                      <td
+                        style={{
+                          borderBottom: 'solid black 2px',
+                          textAlign: 'center',
+                        }}>
+                        {index === 0 ? '점심' : '저녁'}
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {schoolFood.DDISH_NM.split('<br/>').map((menu) => (
+                      <tr key={menu}>
+                        <td style={{ padding: '4px' }}>
+                          {menu.replace(/[0-9]/g, '').replace(/["."]/g, '')}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
-              <br />
-            </Text>
-          ))}
+                <br />
+              </Text>
+            ))}
+          </div>
         </Text>
         <Text style={styles.txtSymbol}>{symbol}</Text>
       </View>

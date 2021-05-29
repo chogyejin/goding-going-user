@@ -50,7 +50,11 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
             }>
             <Text> - 선생님 팁 게시판 버튼</Text>
           </TouchableOpacity>
-
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() => navigation.navigate(HomeScreens.Naesin, { symbol })}>
+            <Text>내신 계산기</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.list}>
             <Text> - 무슨 무슨 게시판 </Text>
           </TouchableOpacity>

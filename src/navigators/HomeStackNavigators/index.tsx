@@ -25,6 +25,10 @@ import MessageDetail, {
 import CreateTip, {
   CreateTipParams,
 } from '../../screens/EtcScreen/TeacherTip/CreateTip';
+import Naesin, { NaesinParams } from '../../screens/EtcScreen/Naesin';
+import NaesinCalc, {
+  NaesinCalcParams,
+} from '../../screens/EtcScreen/Naesin/NaesinCalc';
 
 // Home Screen 에서 필요한 스택은 2개 - 메인, 디테일
 
@@ -42,6 +46,8 @@ export enum HomeScreens {
   MessageDetail = 'MessageDetail',
   BoardCreation = 'BoardCreation',
   CreateTip = 'CreateTip',
+  Naesin = 'Naesin',
+  NaesinCalc = 'NaesinCalc',
 }
 
 // 2. 각 스크린 마다 필요한 파라미터 타입 정의
@@ -58,6 +64,8 @@ export type HomeStackParamList = {
   Message: MessageParams;
   MessageDetail: MessageDetailParams;
   CreateTip: CreateTipParams;
+  Naesin: NaesinParams;
+  NaesinCalc: NaesinCalcParams;
 };
 
 // 3. 방금 만든 타입을 createStackNavigator 메소드 앞에 지정해주서 HomeStack 네비게이터 객체를 만들어줌.
@@ -89,6 +97,8 @@ const HomeStackNavigator: React.FunctionComponent = () => {
         component={MessageDetail}
       />
       <HomeStack.Screen name={HomeScreens.CreateTip} component={CreateTip} />
+      <HomeStack.Screen name={HomeScreens.Naesin} component={Naesin} />
+      <HomeStack.Screen name={HomeScreens.NaesinCalc} component={NaesinCalc} />
     </HomeStack.Navigator>
   );
 };

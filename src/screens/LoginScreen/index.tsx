@@ -44,22 +44,6 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
   // LoginScreenProps 에 navigation 이 있으니까 비구조화 할당으로 꺼내쓸 수 있음
 
   const login = async () => {
-    console.log('로그인 클릭');
-
-    // const headers = {
-    //   'Content-Type': 'application/json',
-    // };
-
-    // const result = await axios.post(
-    //   'http://localhost:4000/api/login',
-    //   { headers },
-    //   {
-    //     params: {
-    //       email,
-    //       password,
-    //     },
-    //   },
-    // );
     const result = await axios.get('http://localhost:4000/api/login', {
       params: {
         email,

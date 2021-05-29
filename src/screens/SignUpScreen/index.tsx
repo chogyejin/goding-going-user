@@ -61,7 +61,6 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
   const [checkedNickname, setCheckedNickname] = useState(false);
 
   useEffect(() => {
-    console.log('돌아감');
     setDisabled(
       !(
         email &&
@@ -88,11 +87,6 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
       alert('이메일 형식이 잘못되었습니다.');
       return;
     }
-    console.log(email);
-    console.log(password);
-    console.log(name);
-    console.log(nickName);
-    console.log(schoolID);
 
     const headers = {
       'Content-Type': 'application/json',
@@ -123,7 +117,6 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
       },
     });
     //result : 이미 테이블에 있으면 false return받고, 없으면 true return받음
-    console.log(result);
     if (result.data) {
       setCheckedNickname(true); //닉네임 중복확인이 되어야 회원가입이 가능하도록
       alert('닉네임 사용 가능');
@@ -140,7 +133,6 @@ const SignUpScreen: React.FunctionComponent<SignUpScreenProps> = (props) => {
     });
 
     setSchools(result.data);
-    console.log(result.data);
   };
 
   const selectSchool = (schoolID: string, schoolName: string) => () => {

@@ -72,7 +72,6 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
           const existsPosts = result.data.posts.length > 0;
           if (isFirstLoad && existsPosts) {
             setIsFirstLoad(false);
-            console.log(result.data.posts);
             setPosts(result.data.posts || []);
           }
         } else {
@@ -86,21 +85,17 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const onChangeSelectedCategry = async (itemValue: string) => {
     const myShcoolID = await AsyncStorage.getItem('schoolID');
     setSelectedCategroy(itemValue);
-    console.log('뭐히세여?');
     const result = await axios.get('http://localhost:4000/api/posts', {
       params: {
         schoolID: myShcoolID,
         category: itemValue === '전체 보기' ? undefined : itemValue,
       },
     });
-    console.log('카테고리 바꾸고 결과값');
-    console.log(result.data);
     if (result.data) {
       setPosts(result.data.posts || []);
     }
   };
 
-  console.log(posts);
   //<Icon name="add-circle-outline"></Icon>
   return (
     <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>

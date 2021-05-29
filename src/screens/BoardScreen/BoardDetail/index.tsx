@@ -76,7 +76,6 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
           postID,
         },
       });
-      console.log(result);
       if (result && !isCompletedLoading) {
         setIsCompletedLoading(true);
         setPost(result.data.post);
@@ -89,8 +88,6 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
 
   async function isYou(postUserID: string) {
     const asyncUserID = await AsyncStorage.getItem('userID');
-    console.log(asyncUserID);
-    console.log(postUserID);
     if (postUserID == asyncUserID) {
       return false;
     } else {
@@ -103,7 +100,6 @@ const BoardDetail: React.FunctionComponent<BoardDetailProps> = (props) => {
   };
 
   const [isVisible, setIsVisible] = useState(false);
-  console.log(isVisible);
 
   // 본인이 본인 작성 post의 닉네임을 누르면 쪽지보내기 뜨지 않게 하기위해 시도했으나,
   // isYou의 return이 false여도 &&연산자가 제대로 작동 안해서 일단 뺌

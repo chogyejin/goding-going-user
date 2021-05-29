@@ -58,15 +58,6 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
   const { userID } = params;
 
   const sendMessage = async () => {
-    console.log('send message');
-    console.log('sendingUserID');
-    console.log(sendingUserID);
-    console.log('receivedUserID');
-    console.log(receivedUserID);
-    console.log('contents');
-    console.log(contents);
-    console.log('title');
-    console.log(title);
     const result = await axios.post(
       'http://localhost:4000/api/createMessage',
       { 'Content-Type': 'application/json' },
@@ -79,17 +70,14 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
         },
       },
     );
-    console.log(result);
     getMessage();
     navigation.navigate(HomeScreens.Message, {
       userID,
-      // newMessageID: result.data.message.id,
     });
   };
 
   async function getMessage() {
     if (!sendingUserID) {
-      //console.log('userID가 없어요');
       return;
     }
     const result = await axios.get('http://localhost:4000/api/messages', {
@@ -98,7 +86,6 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
         receivedUserID: userID,
       },
     });
-    // console.log('result 반환 했어요');
 
     if (result && !isCompletedLoading) {
       setIsCompletedLoading(true);
@@ -106,9 +93,6 @@ const MessageDetail: React.FunctionComponent<MessageDetailProps> = (props) => {
     } else {
     }
   }
-  // const moveMessage = (userID: string) => () => {
-  //  navigation.navigate(HomeScreens.Message, { userID });
-  // };
 
   useEffect(() => {
     async function setUser() {

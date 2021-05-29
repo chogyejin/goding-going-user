@@ -105,7 +105,6 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
           userID,
         },
       });
-      console.log(result);
       if (result.data && result.data.naesin) {
         navigation.navigate(HomeScreens.NaesinCalc, { symbol });
       }
@@ -137,11 +136,7 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
 
   const onCreateNaesin = async () => {
     const userID = await AsyncStorage.getItem('userID');
-    console.log(
-      totalScore.secondGrade.firstSemester.map((ele) => {
-        return { subject: ele.subjectName, score: ele.score };
-      }),
-    );
+
     const result = await axios.post(
       'http://localhost:4000/api/createNaesin',
       { headers },

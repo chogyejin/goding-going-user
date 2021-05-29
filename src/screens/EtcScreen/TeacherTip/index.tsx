@@ -47,28 +47,6 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
     navigation.navigate(HomeScreens.TeacherTipDetail, { teacherID });
   };
 
-  // useEffect(() => {
-  //   async function getTeacher() {
-  //     const schoolID = await AsyncStorage.getItem('schoolID');
-  //     const result = await axios.get('http://localhost:4000/api/teachers', {
-  //       params: {
-  //         schoolID,
-  //       },
-  //     });
-
-  //     console.log(result.data.teachers);
-  //     if (result.data) {
-  //       if (teachers.length === 0) {
-  //         setTeachers(result.data.teachers);
-  //       }
-  //     } else {
-  //       console.log('실패');
-  //     }
-  //   }
-
-  //   getTeacher();
-  // }, [teachers]);
-
   useFocusEffect(
     React.useCallback(() => {
       async function getTeacher() {
@@ -79,7 +57,6 @@ const TeacherTipScreen: React.FunctionComponent<TeacherTipProps> = (props) => {
           },
         });
 
-        console.log(result.data.teachers);
         if (result.data) {
           if (teachers.length === 0) {
             setTeachers(result.data.teachers);

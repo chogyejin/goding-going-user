@@ -250,7 +250,6 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
         result.data.naesin &&
         totalScore.firstGrade.firstSemester.length === 0
       ) {
-        console.log('내신 가져오기 성공');
         setTotalScore({
           firstGrade: {
             firstSemester: result.data.naesin.grade1FirstSemester,

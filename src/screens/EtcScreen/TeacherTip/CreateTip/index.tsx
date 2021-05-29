@@ -104,12 +104,10 @@ const CreateTip: React.FunctionComponent<CreateTipProps> = (props) => {
     });
 
     if (result.data.teachers.length > 0) {
-      console.log('선생님 확인');
       alert('선생님 이름 사용');
       setTeacherName(teacherName);
       setTeacherID(result.data.teachers[0].id);
     } else {
-      console.log('선생님 확인x, 선생님 추가');
       confirm('찾는 선생님 없습니다. 만드시겠습니까?');
       createTeacher();
     }

@@ -44,26 +44,12 @@ interface IMessage {
 }
 
 const MessageScreen: React.FunctionComponent<MessageScreenProps> = (props) => {
-  //const [sendingUserID, setSendingUserID] = useState<string>('');
-  //const [receivedUserID, setReceivedUserID] = useState<string>('');
-  //const [contents, setContents] = useState<string>('');
-  //const [title, setTitle] = useState<string>('');
-  //나 = asyncstorage의 userID -> sendingUserID
-  //너 = 게시글 쓴 사람(board detail로부터 넘겨받은 userID) -> receivedUserID
   const [isCompletedLoading, setIsCompletedLoading] = useState<boolean>(false);
   const [myUserID, setMyUserID] = useState<String>('');
   const { navigation, route } = props;
   const { params } = route;
   const { userID, newMessageID } = params;
-  //const [newMessageIDState, setNewMessageIDState] = useState('');
   const [messages, setMessages] = useState<IMessage[]>([]);
-  //const isFocused = useIsFocused();
-
-  //if (newMessageID) {
-  //  setNewMessageIDState(newMessageID);
-  // }
-
-  // console.log(newMessageID);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -110,9 +96,6 @@ const MessageScreen: React.FunctionComponent<MessageScreenProps> = (props) => {
   const moveMessageDetail = (userID: string) => () => {
     navigation.navigate(HomeScreens.MessageDetail, { userID });
   };
-
-  console.log('내 아래는 마이 유저 아이디');
-  console.log(myUserID);
 
   return (
     <View style={styles.container}>

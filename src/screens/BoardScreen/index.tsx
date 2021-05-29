@@ -18,6 +18,10 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import { Input, Label, Item, InputGroup, Textarea, Button } from 'native-base';
+import { Picker } from '@react-native-picker/picker';
+
+const CATEGORIES = ['자유', '입시', '동아리', '1학년', '2학년', '3학년'];
 
 type BoardScreenNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -35,11 +39,16 @@ interface Post {
   userID: string;
   schoolID: string;
   title: string;
+  category: string;
+  user: {
+    nickName: string;
+  };
 }
 const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
   const { navigation } = props;
   const [posts, setPosts] = useState<Post[]>([]);
   const [isFirstLoad, setIsFirstLoad] = useState<Boolean>(true);
+  const [selectedCategory, setSelectedCategroy] = useState<string>('전체 보기');
 
   const movePost = (postID: string) => () => {
     navigation.navigate(HomeScreens.BoardDetail, { postID });
@@ -73,25 +82,58 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
       getPost();
     }, [posts]),
   );
+
+  const onChangeSelectedCategry = async (itemValue: string) => {
+    const myShcoolID = await AsyncStorage.getItem('schoolID');
+    setSelectedCategroy(itemValue);
+    console.log('뭐히세여?');
+    const result = await axios.get('http://localhost:4000/api/posts', {
+      params: {
+        schoolID: myShcoolID,
+        category: itemValue === '전체 보기' ? undefined : itemValue,
+      },
+    });
+    console.log('카테고리 바꾸고 결과값');
+    console.log(result.data);
+    if (result.data) {
+      setPosts(result.data.posts || []);
+    }
+  };
+
+  console.log(posts);
   //<Icon name="add-circle-outline"></Icon>
   return (
     <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.subTitle}>
-          <Text> 자유 게시판 </Text>
+          <Text>게시판 </Text>
         </View>
         <TouchableOpacity
           style={styles.newPostButton}
           onPress={onMoveCreationPage}>
-          <Text>새로운 글쓰기</Text>
+          <Text style={{ color: 'blue' }}>새로운 글쓰기</Text>
         </TouchableOpacity>
+        <InputGroup stackedLabel style={{ paddingBottom: '16px' }}>
+          <Label>카테고리</Label>
+          <Picker
+            selectedValue={selectedCategory}
+            onValueChange={onChangeSelectedCategry}>
+            <Picker.Item label={'전체 보기'} value={'전체 보기'} />
+            {CATEGORIES.map((category) => (
+              <Picker.Item label={category} value={category} />
+            ))}
+          </Picker>
+        </InputGroup>
         {posts.map((post) => (
-          <TouchableOpacity style={styles.postStyle}>
+          <TouchableOpacity key={post.id} style={styles.postStyle}>
             <Text
               onPress={movePost(post.id)}
               key={post.id}
               style={{ marginLeft: 10 }}>
-              {post.title}
+              <b>[{post.category}]</b> {post.title}
+            </Text>
+            <Text style={styles.postNickNameStyle}>
+              작성자: {post.user.nickName}
             </Text>
           </TouchableOpacity>
         ))}
@@ -101,6 +143,10 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+  postNickNameStyle: {
+    textAlign: 'right',
+    paddingRight: '8px',
+  },
   subTitle: {
     margin: 10,
     flexDirection: 'row',

@@ -17,6 +17,7 @@ import { useRef } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Picker } from '@react-native-picker/picker';
 //import { RichEditor } from 'react-native-pell-rich-editor';
 
 type BoardCreationNavigationProps = StackNavigationProp<
@@ -33,6 +34,7 @@ interface BoardCreationProps {
   navigation: BoardCreationNavigationProps;
 }
 
+const CATEGORIES = ['자유', '입시', '동아리', '1학년', '2학년', '3학년'];
 interface IPost {
   schoolID: string;
   title: string;
@@ -40,6 +42,7 @@ interface IPost {
   userID: string;
   hits: number;
   recommendUserIDs: string;
+  category: string;
 }
 
 // 게시글 상세 페이지에서는 받은 postID를 통해서
@@ -54,6 +57,7 @@ const BoardCreation: React.FunctionComponent<BoardCreationProps> = (props) => {
     userID: '',
     hits: 0,
     recommendUserIDs: '',
+    category: '자유',
   });
   const [disabled, setDisabled] = useState(true);
 
@@ -65,8 +69,6 @@ const BoardCreation: React.FunctionComponent<BoardCreationProps> = (props) => {
     async function getMyUserIDAndSchoolID() {
       const myUserID = await AsyncStorage.getItem('userID');
       const mySchoolID = await AsyncStorage.getItem('schoolID');
-      console.log('왜 스쿨 아이디가 없죠...?');
-      console.log(mySchoolID);
 
       setPost({
         ...post,
@@ -92,6 +94,7 @@ const BoardCreation: React.FunctionComponent<BoardCreationProps> = (props) => {
           userID: post.userID,
           hits: 0,
           recommendUserIDs: [],
+          category: post.category,
         },
       },
     );
@@ -99,15 +102,25 @@ const BoardCreation: React.FunctionComponent<BoardCreationProps> = (props) => {
       postID: result.data.post.id,
       // newMessageID: result.data.message.id,
     });
-
-    console.log('버튼을 클릭하였구나');
   };
-
-  console.log(post.title);
 
   return (
     <SafeAreaView style={{ backgroundColor: '#dae7ed', flex: 1 }}>
       <View style={styles.container}>
+        <View>
+          <InputGroup stackedLabel style={{}}>
+            <Label>카테고리</Label>
+            <Picker
+              selectedValue={post.category}
+              onValueChange={(itemValue) =>
+                setPost({ ...post, category: itemValue })
+              }>
+              {CATEGORIES.map((category) => (
+                <Picker.Item label={category} value={category} />
+              ))}
+            </Picker>
+          </InputGroup>
+        </View>
         <View>
           <InputGroup stackedLabel style={{}}>
             <Label>제목</Label>

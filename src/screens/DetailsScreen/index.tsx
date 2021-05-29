@@ -129,8 +129,11 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
               }>
               <Icon name="reader-outline" />
             </Button>
-            <Button>
-              <Icon name="calendar-outline" />
+            <Button
+              onPress={() =>
+                navigation.navigate(HomeScreens.Profile, { symbol })
+              }>
+              <Icon name="person" />
             </Button>
             <Button
               onPress={() => navigation.navigate(HomeScreens.Etc, { symbol })}>

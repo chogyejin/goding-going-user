@@ -29,7 +29,14 @@ import Naesin, { NaesinParams } from '../../screens/EtcScreen/Naesin';
 import NaesinCalc, {
   NaesinCalcParams,
 } from '../../screens/EtcScreen/Naesin/NaesinCalc';
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import ProfileScreen, { ProfileParams } from '../../screens/ProfileScreen';
+import ChangePassword, {
+  ChangePasswordParams,
+} from '../../screens/ProfileScreen/ChangePassword';
+import ChangeNickName, {
+  ChangeNickNameParams,
+} from '../../screens/ProfileScreen/ChangeNickName';
 // Home Screen 에서 필요한 스택은 2개 - 메인, 디테일
 
 // 1. 필요한 스크린에 대해 enum 타입을 정의한다. (리듀서에서 액션타입을 지정해주는 것 처럼)
@@ -48,6 +55,9 @@ export enum HomeScreens {
   CreateTip = 'CreateTip',
   Naesin = 'Naesin',
   NaesinCalc = 'NaesinCalc',
+  Profile = 'Profile',
+  ChangePassword = 'ChangePassword',
+  ChangeNickName = 'ChangeNickName',
 }
 
 // 2. 각 스크린 마다 필요한 파라미터 타입 정의
@@ -66,10 +76,14 @@ export type HomeStackParamList = {
   CreateTip: CreateTipParams;
   Naesin: NaesinParams;
   NaesinCalc: NaesinCalcParams;
+  Profile: ProfileParams;
+  ChangePassword: ChangePasswordParams;
+  ChangeNickName: ChangeNickNameParams;
 };
 
 // 3. 방금 만든 타입을 createStackNavigator 메소드 앞에 지정해주서 HomeStack 네비게이터 객체를 만들어줌.
 const HomeStack = createStackNavigator<HomeStackParamList>();
+const SubStack = createStackNavigator<HomeStackParamList>();
 const HomeStackNavigator: React.FunctionComponent = () => {
   return (
     <HomeStack.Navigator>
@@ -99,6 +113,15 @@ const HomeStackNavigator: React.FunctionComponent = () => {
       <HomeStack.Screen name={HomeScreens.CreateTip} component={CreateTip} />
       <HomeStack.Screen name={HomeScreens.Naesin} component={Naesin} />
       <HomeStack.Screen name={HomeScreens.NaesinCalc} component={NaesinCalc} />
+      <HomeStack.Screen name={HomeScreens.Profile} component={ProfileScreen} />
+      <HomeStack.Screen
+        name={HomeScreens.ChangePassword}
+        component={ChangePassword}
+      />
+      <HomeStack.Screen
+        name={HomeScreens.ChangeNickName}
+        component={ChangeNickName}
+      />
     </HomeStack.Navigator>
   );
 };

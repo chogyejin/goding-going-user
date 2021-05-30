@@ -450,7 +450,7 @@ const Naesin: React.FunctionComponent<NaesinProps> = (props) => {
       </View>
       <View style={styles.calcButton}>
         <TouchableOpacity onPress={onCreateNaesin}>
-          <Text>비율 계산 페이지로 이동</Text>
+          <Text style={{ color: 'white' }}>비율 계산 페이지로 이동</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -519,11 +519,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calcButton: {
+    height: 30,
     alignItems: 'center',
-    borderWidth: 4,
-    borderColor: '#20232a',
-    borderRadius: 6,
-    backgroundColor: '#61dafb',
+    borderRadius: 10,
+    marginLeft: 10,
+    marginRight: 5,
+    marginBottom: 5,
+    padding: 3,
+    justifyContent: 'center',
+    backgroundColor: '#1388c2',
   },
 });
 

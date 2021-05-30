@@ -13,6 +13,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type NaesinCalcNavigationProps = StackNavigationProp<
   HomeStackParamList,
@@ -270,52 +271,79 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
   });
 
   return (
-    <View style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <Text>1학년</Text>
-        <TextInput
-          style={{ borderWidth: 1, width: 100 }}
-          value={firstGradePercent ? String(firstGradePercent) : ''}
-          placeholder="1학년 반영 비율"
-          onChangeText={(text) =>
-            setFirstGradePercent(Number(text))
-          }></TextInput>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contents}>
+        <View style={styles.content}>
+          <Text>1학년</Text>
+          <TextInput
+            style={{ borderBottomWidth: 1, width: 100 }}
+            value={firstGradePercent ? String(firstGradePercent) : ''}
+            placeholder="1학년 반영 비율"
+            onChangeText={(text) =>
+              setFirstGradePercent(Number(text))
+            }></TextInput>
+        </View>
+        <View style={styles.content}>
+          <Text>2학년</Text>
+          <TextInput
+            style={{ borderBottomWidth: 1, width: 100 }}
+            value={secondGradePercent ? String(secondGradePercent) : ''}
+            placeholder="2학년 반영 비율"
+            onChangeText={(text) =>
+              setSecondGradePercent(Number(text))
+            }></TextInput>
+        </View>
+        <View style={styles.content}>
+          <Text>3학년</Text>
+          <TextInput
+            style={{ borderBottomWidth: 1, width: 100 }}
+            value={thirdGradePercent ? String(thirdGradePercent) : ''}
+            placeholder="3학년 반영 비율"
+            onChangeText={(text) =>
+              setThirdGradePercent(Number(text))
+            }></TextInput>
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity onPress={calculateNaesin}>
+            <Text style={{ color: 'white' }}>계산해보기</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text style={{ fontSize: 30 }}>{calculatedNaesin}</Text>
+        </View>
       </View>
-      <View style={{ flex: 1 }}>
-        <Text>2학년</Text>
-        <TextInput
-          style={{ borderWidth: 1, width: 100 }}
-          value={secondGradePercent ? String(secondGradePercent) : ''}
-          placeholder="2학년 반영 비율"
-          onChangeText={(text) =>
-            setSecondGradePercent(Number(text))
-          }></TextInput>
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text>3학년</Text>
-        <TextInput
-          style={{ borderWidth: 1, width: 100 }}
-          value={thirdGradePercent ? String(thirdGradePercent) : ''}
-          placeholder="3학년 반영 비율"
-          onChangeText={(text) =>
-            setThirdGradePercent(Number(text))
-          }></TextInput>
-      </View>
-      <View style={{ alignItems: 'center', marginTop: 30 }}>
-        <TouchableOpacity onPress={calculateNaesin}>
-          <Text style={{ borderWidth: 1 }}>계산해보기</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={{ fontSize: 30 }}>{calculatedNaesin}</Text>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#dae7ed',
+  },
+  contents: {
+    flex: 1,
+    margin: 10,
+    backgroundColor: 'white',
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    margin: 10,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#dae7ed',
+  },
+  button: {
+    height: 30,
+    alignItems: 'center',
+    borderRadius: 10,
+    marginLeft: 10,
+    marginRight: 5,
+    marginBottom: 5,
+    padding: 3,
+    justifyContent: 'center',
+    backgroundColor: '#1388c2',
   },
 });
 

@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
@@ -74,24 +75,27 @@ const ChangeNickName: React.FunctionComponent<ChangeNickNameProps> = (
   };
 
   return (
-    <SafeAreaView>
-      <View style={{ flexDirection: 'row' }}>
-        <Input
-          style={{ borderWidth: 2 }}
-          returnKeyType="next"
-          value={nickName}
-          onChangeText={(text) => setNickname(text)}
-        />
-        <TouchableOpacity>
-          <Text style={{ borderWidth: 2 }} onPress={checkNickName}>
-            중복확인
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ alignItems: 'center', marginTop: 30 }}>
-        <TouchableOpacity onPress={changeNickName}>
-          <Text>변경 완료</Text>
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <Text style={{ margin: 10, padding: 10 }}>변경할 닉네임</Text>
+        <View style={styles.change}>
+          <Input
+            style={{ borderBottomWidth: 1 }}
+            returnKeyType="next"
+            value={nickName}
+            onChangeText={(text) => setNickname(text)}
+          />
+          <TouchableOpacity style={styles.checkButton}>
+            <Text style={{ color: '#1388c2', flex: 1 }} onPress={checkNickName}>
+              중복확인
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity style={styles.button} onPress={changeNickName}>
+            <Text style={{ color: 'white' }}>변경 완료</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -100,6 +104,22 @@ const ChangeNickName: React.FunctionComponent<ChangeNickNameProps> = (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    //justifyContent: 'space-between',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    backgroundColor: '#dae7ed',
+  },
+  content: {
+    backgroundColor: 'white',
+    margin: 10,
+    padding: 1,
+    flex: 1,
+  },
+  change: {
+    flexDirection: 'row',
+    margin: 10,
+    padding: 1,
+    flex: 1,
   },
   logo: {
     //flex: 1,
@@ -107,6 +127,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     marginTop: 30,
+  },
+  button: {
+    height: 30,
+    width: '90%',
+    alignItems: 'center',
+    borderRadius: 10,
+    margin: 20,
+    padding: 3,
+    justifyContent: 'center',
+    backgroundColor: '#1388c2',
+  },
+  checkButton: {
+    height: 30,
+    alignItems: 'center',
+    borderRadius: 10,
+    marginLeft: 10,
+    marginRight: 5,
+    marginBottom: 5,
+    padding: 3,
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#1388c2',
   },
 });
 

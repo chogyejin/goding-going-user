@@ -28,31 +28,102 @@ interface ProfileScreenProps {
   route: { params: ProfileParams };
   navigation: ProfileScreenNavigationProps;
 }
-
+interface IUser {
+  name: string;
+  nickName: string;
+  school: {
+    name: string;
+  };
+}
 //user : email, password, name, nickName, school
 const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
   const { navigation, route } = props;
   const { params } = route;
+  const [schoolID, setSchoolID] = useState<string>('');
+  const [user, setUser] = useState<IUser>({
+    name: '',
+    nickName: '',
+    school: {
+      name: '',
+    },
+  });
 
+  useEffect(() => {
+    async function getMySchoolID() {
+      if (schoolID) {
+        return;
+      }
+
+      const asyncSchoolID = await AsyncStorage.getItem('schoolID');
+      if (!asyncSchoolID) {
+        return;
+      }
+      setSchoolID(asyncSchoolID);
+    }
+
+    getMySchoolID();
+  });
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.logo}>
-        <Image
-          style={{ height: 100, width: 100 }}
-          source={require('./profile.png')}
-        />
-      </View>
-      <View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(HomeScreens.ChangePassword, {})}>
-          <Text style={{ borderWidth: 1 }}>비밀번호 변경</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(HomeScreens.ChangeNickName, {})}>
-          <Text style={{ borderWidth: 1 }}>닉네임 변경</Text>
-        </TouchableOpacity>
+      <View style={styles.content}>
+        <View
+          style={{
+            borderWidth: 1,
+            padding: 8,
+            margin: 10,
+            //borderColor: '#1388c2',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}>
+            <div>
+              <div>
+                <Text>
+                  <b>이름</b>: {user.name}
+                </Text>
+              </div>
+              <div>
+                <Text>
+                  <b>닉네임</b>: {user.nickName}
+                </Text>
+              </div>
+              <div>
+                <Text>
+                  <b>학교</b>: {user.school.name}
+                </Text>
+              </div>
+            </div>
+            <div>
+              <Image
+                style={{ height: 100, width: 100 }}
+                source={require('../ProfileScreen/profile.png')}
+              />
+            </div>
+          </div>
+          <div>
+            <Image
+              style={{ marginTop: '8px', height: 50, width: '100%' }}
+              source={require('../ProfileScreen/barcode.png')}
+            />
+          </div>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate(HomeScreens.ChangePassword, {})}>
+            <Text style={{ color: '#1388c2' }}>비밀번호 변경</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate(HomeScreens.ChangeNickName, {})}>
+            <Text style={{ color: '#1388c2' }}>닉네임 변경</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View>
         <View style={styles.tab}>
@@ -87,6 +158,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+    backgroundColor: '#dae7ed',
+  },
+  content: {
+    backgroundColor: 'white',
+    margin: 10,
+    padding: 1,
+    flex: 1,
   },
   logo: {
     //flex: 1,
@@ -97,6 +175,18 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
+  },
+  button: {
+    height: 30,
+    alignItems: 'center',
+    borderRadius: 10,
+    marginLeft: 10,
+    marginRight: 5,
+    marginBottom: 5,
+    padding: 3,
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#1388c2',
   },
 });
 

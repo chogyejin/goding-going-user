@@ -60,12 +60,27 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
       }
       setSchoolID(asyncSchoolID);
     }
-
     getMySchoolID();
   });
+  useEffect(() => {
+    async function getUserID() {
+      const userID = await AsyncStorage.getItem('userID');
+      const {
+        data: { user },
+      } = await axios.get('http://localhost:4000/api/user', {
+        params: {
+          id: userID,
+        },
+      });
+
+      setUser(user);
+    }
+    getUserID();
+  }, [schoolID]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
+        <Text>{user.name}</Text>
         <View
           style={{
             borderWidth: 1,
@@ -81,17 +96,17 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
             <div>
               <div>
                 <Text>
-                  <b>이름</b>: {user.name}
+                  <b>이름</b> : {user.name}
                 </Text>
               </div>
               <div>
                 <Text>
-                  <b>닉네임</b>: {user.nickName}
+                  <b>닉네임</b> : {user.nickName}
                 </Text>
               </div>
               <div>
                 <Text>
-                  <b>학교</b>: {user.school.name}
+                  <b>학교</b> : {user.school.name}
                 </Text>
               </div>
             </div>

@@ -60,14 +60,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#dae7ed',
   },
   foodContainer: {
-    marginBottom: 50,
+    marginBottom: 30,
   },
   txtSignupScreenContainer: {
     backgroundColor: 'white',
-    margin: 16,
-    padding: 16,
+    margin: 10,
+    padding: 10,
     flex: 1,
-    borderRadius: 5,
   },
   tab: {
     flex: 1,
@@ -178,7 +177,7 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
 
         <Text
           style={{
-            border: 'solid black 1px',
+            borderWidth: 1,
             marginTop: '32px',
           }}>
           <div

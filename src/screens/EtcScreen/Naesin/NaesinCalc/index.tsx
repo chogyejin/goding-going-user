@@ -274,31 +274,31 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.contents}>
         <View style={styles.content}>
-          <Text>1학년</Text>
+          <Text style={styles.gradeNumberName}>1학년</Text>
           <TextInput
-            style={{ borderBottomWidth: 1, width: 100 }}
+            style={styles.ratioTextInput}
             value={firstGradePercent ? String(firstGradePercent) : ''}
-            placeholder="1학년 반영 비율"
+            placeholder="1학년 반영 비율 입력"
             onChangeText={(text) =>
               setFirstGradePercent(Number(text))
             }></TextInput>
         </View>
         <View style={styles.content}>
-          <Text>2학년</Text>
+          <Text style={styles.gradeNumberName}>2학년</Text>
           <TextInput
-            style={{ borderBottomWidth: 1, width: 100 }}
+            style={styles.ratioTextInput}
             value={secondGradePercent ? String(secondGradePercent) : ''}
-            placeholder="2학년 반영 비율"
+            placeholder="2학년 반영 비율 입력"
             onChangeText={(text) =>
               setSecondGradePercent(Number(text))
             }></TextInput>
         </View>
         <View style={styles.content}>
-          <Text>3학년</Text>
+          <Text style={styles.gradeNumberName}>3학년</Text>
           <TextInput
-            style={{ borderBottomWidth: 1, width: 100 }}
+            style={styles.ratioTextInput}
             value={thirdGradePercent ? String(thirdGradePercent) : ''}
-            placeholder="3학년 반영 비율"
+            placeholder="3학년 반영 비율 입력"
             onChangeText={(text) =>
               setThirdGradePercent(Number(text))
             }></TextInput>
@@ -317,6 +317,17 @@ const NaesinCalc: React.FunctionComponent<NaesinCalcProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+  gradeNumberName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  ratioTextInput: {
+    width: 135,
+    border: 'solid black 1px',
+    borderRadius: 5,
+    padding: 8,
+  },
   container: {
     flex: 1,
     backgroundColor: '#dae7ed',

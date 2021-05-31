@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,14 +12,12 @@ import {
   HomeScreens,
   HomeStackParamList,
 } from '../../navigators/HomeStackNavigators';
-import {
-  createStackNavigator,
-  StackNavigationProp,
-} from '@react-navigation/stack';
+import moment from 'moment';
+import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import { Input, Label, Item, InputGroup, Textarea, Button } from 'native-base';
+import { useFocusEffect } from '@react-navigation/native';
+import { Label, InputGroup, Button } from 'native-base';
 import { Picker } from '@react-native-picker/picker';
 
 const CATEGORIES = ['자유', '입시', '동아리', '1학년', '2학년', '3학년'];
@@ -42,6 +40,7 @@ interface Post {
   schoolID: string;
   title: string;
   category: string;
+  createdAt: string;
   user: {
     nickName: string;
   };
@@ -134,11 +133,12 @@ const BoardScreen: React.FunctionComponent<BoardScreenProps> = (props) => {
             <Text
               onPress={movePost(post.id)}
               key={post.id}
-              style={{ marginLeft: 10 }}>
+              style={{ marginLeft: 10, marginBottom: 8 }}>
               <b>[{post.category}]</b> {post.title}
             </Text>
             <Text style={styles.postNickNameStyle}>
-              작성자: {post.user.nickName}
+              작성자: {post.user.nickName} /{' '}
+              {moment(post.createdAt).format('YYYY-M-D H:m:s')}
             </Text>
           </TouchableOpacity>
         ))}
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
   postNickNameStyle: {
     textAlign: 'right',
     paddingRight: '8px',
+    fontSize: 12,
   },
   subTitle: {
     margin: 10,

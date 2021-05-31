@@ -22,6 +22,9 @@ import MessageScreen, { MessageParams } from '../../screens/MessageScreen';
 import MessageDetail, {
   MessageDetailParams,
 } from '../../screens/MessageScreen/MessageDetail';
+import MessageList, {
+  MessageListParams,
+} from '../../screens/MessageScreen/MessageList';
 import CreateTip, {
   CreateTipParams,
 } from '../../screens/EtcScreen/TeacherTip/CreateTip';
@@ -49,6 +52,7 @@ export enum HomeScreens {
   Etc = 'Etc',
   TeacherTip = 'TeacherTip',
   TeacherTipDetail = 'TeacherTipDetail',
+  MessageList = 'MessageList',
   Message = 'Message',
   MessageDetail = 'MessageDetail',
   BoardCreation = 'BoardCreation',
@@ -72,6 +76,7 @@ export type HomeStackParamList = {
   TeacherTip: TeacherTipParams;
   TeacherTipDetail: TeacherTipDetailParams;
   Message: MessageParams;
+  MessageList: MessageListParams;
   MessageDetail: MessageDetailParams;
   CreateTip: CreateTipParams;
   Naesin: NaesinParams;
@@ -116,6 +121,11 @@ const HomeStackNavigator: React.FunctionComponent = () => {
       <HomeStack.Screen
         name={HomeScreens.TeacherTipDetail}
         component={TeacherTipDetail}
+      />
+      <HomeStack.Screen
+        name={HomeScreens.MessageList}
+        component={MessageList}
+        options={{ headerLeft: () => null }}
       />
       <HomeStack.Screen
         name={HomeScreens.Message}

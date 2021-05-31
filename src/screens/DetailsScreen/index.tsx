@@ -237,7 +237,8 @@ const DetailsScreen: React.FunctionComponent<DetailsScreenProps> = (props) => {
             <Button onPress={() => navigation.navigate(HomeScreens.Etc, {})}>
               <Icon name="grid-outline" />
             </Button>
-            <Button onPress={() => navigation.navigate(HomeScreens.Board, {})}>
+            <Button
+              onPress={() => navigation.navigate(HomeScreens.MessageList, {})}>
               <Icon name="chatbox-outline" />
             </Button>
             <Button

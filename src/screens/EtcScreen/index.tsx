@@ -41,23 +41,31 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
       }}>
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <Text>게시판 바로 가기</Text>
+          <Text style={styles.linksHeader}>게시판 바로 가기</Text>
           <TouchableOpacity
             style={styles.list}
             onPress={() => navigation.navigate(HomeScreens.Board, {})}>
-            <Text> - 게시판 </Text>
+            <Text style={styles.listText}> 게시판 </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.list}
             onPress={() => navigation.navigate(HomeScreens.TeacherTip, {})}>
-            <Text> - 선생님 팁 게시판</Text>
+            <Text style={styles.listText}> 선생님 팁 게시판</Text>
           </TouchableOpacity>
-          <Text>기타 기능 바로가기</Text>
+          <View
+            style={{
+              borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+              borderBottomWidth: 1,
+              marginTop: 16,
+              marginBottom: 16,
+            }}
+          />
+          <Text style={styles.linksHeader}>기타 기능 바로가기</Text>
           <TouchableOpacity
             style={styles.list}
             onPress={() => navigation.navigate(HomeScreens.Naesin, {})}>
-            <Text>- 내신 계산기</Text>
+            <Text style={styles.listText}>내신 계산기</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -89,6 +97,9 @@ const EtcScreen: React.FunctionComponent<EtcScreenProps> = (props) => {
 };
 
 const styles = StyleSheet.create({
+  linksHeader: {
+    fontSize: 20,
+  },
   tab: {
     flex: 1,
   },
@@ -103,6 +114,10 @@ const styles = StyleSheet.create({
   },
   list: {
     margin: 10,
+  },
+  listText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
 });
 

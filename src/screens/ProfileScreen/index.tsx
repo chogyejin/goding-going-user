@@ -80,13 +80,11 @@ const ProfileScreen: React.FunctionComponent<ProfileScreenProps> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text>{user.name}</Text>
         <View
           style={{
             borderWidth: 1,
             padding: 8,
             margin: 10,
-            //borderColor: '#1388c2',
           }}>
           <div
             style={{
